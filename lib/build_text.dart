@@ -21,8 +21,9 @@ class AppText extends StatelessWidget {
             color:color,
             fontSize: textSize,
             fontWeight: fontWeight
+        ),
+      overflow: TextOverflow.clip,
 
-
-        ));
+    );
   }
 }
