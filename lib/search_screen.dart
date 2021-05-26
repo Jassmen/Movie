@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/app_sized_box.dart';
 import 'package:movie_app/build_text.dart';
 import 'package:movie_app/movie.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'home.dart';
 
@@ -20,12 +21,11 @@ class SearchScreen extends StatelessWidget {
         padding: const EdgeInsets.only(right:10,left:10),
         child: Column(
           children: [
-            AppSizedBox(height: 70,),
+            AppSizedBox(height: 70.h,),
             searchToolBar(size),
           //  AppSizedBox(height: 20,),
             Expanded(
               child:ListView.builder(
-              //padding: EdgeInsets.all(10),
                 itemCount: getSearchedM.length,
                 itemBuilder: (context,index){
                 return  Container(
@@ -35,21 +35,21 @@ class SearchScreen extends StatelessWidget {
                       children: [
                         Container(
                           height: size.height * .2 ,
-                          width: 110,
+                          width: 110.w,
                           margin: EdgeInsets.only(
                             left: 10,
                           ),
                           child: appImage(getSearchedM[index].image, size),
                         ),
                         AppSizedBox(
-                          width: 10,
+                          width: 10.w,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              width: size.width/2,
+                              width: (size.width/2).w,
                               child: Row(
                                 children: [
                                   AppText(
@@ -67,7 +67,7 @@ class SearchScreen extends StatelessWidget {
                               ),
                             ),
                             AppSizedBox(
-                              height: 10,
+                              height: 10.h,
                             ),
                             AppText(
                                 text:
@@ -77,7 +77,7 @@ class SearchScreen extends StatelessWidget {
                                 color: Colors.white.withOpacity(.7),
                                 textSize: 10),
                             AppSizedBox(
-                              height: 20,
+                              height: 20.h,
                             ),
                             AppText(
                                 text:getSearchedM[index].description,
@@ -99,7 +99,6 @@ class SearchScreen extends StatelessWidget {
 
   Widget searchToolBar(Size size) {
     return Container(
-           // height: 50,
             width: size.width,
             decoration: BoxDecoration(
               borderRadius:  BorderRadius.circular(20),
@@ -118,65 +117,7 @@ class SearchScreen extends StatelessWidget {
           );
   }
 
-/*  Widget movieInfo(Size size) {
-    return Container(
-      child: Row(
-        children: [
-          Container(
-            height: size.height * .2 ,
-            width: 110,
-            margin: EdgeInsets.only(
-              left: 20,
-            ),
-            child: appImage(movie.image, size),
-          ),
-          AppSizedBox(
-            width: 10,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AppText(text: 'Featured Crew', textSize: 12),
-              AppSizedBox(
-                height: 10,
-              ),
-              AppText(
-                text: movie.,
-                fontWeight: FontWeight.bold,
-                textSize: 15,
-              ),
-              AppText(
-                text: movies.writerStates,
-                textSize: 10,
-              ),
-              AppSizedBox(
-                height: 10,
-              ),
-              AppText(
-                text: movies.director,
-                fontWeight: FontWeight.bold,
-                textSize: 15,
-              ),
-              AppText(
-                text: movies.directorStates,
-                textSize: 10,
-              ),
-              AppSizedBox(
-                height: 10,
-              ),
-              AppText(
-                  text:
-                  movies.movieType + '|' + movies.duration + '|' + movies.date,
-                  color: Colors.white.withOpacity(.7),
-                  textSize: 12),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}*/
+
 
 final List<SearchedMovie> getSearchedM =
     [

@@ -35,13 +35,7 @@ class _HomeState extends State<Home> {
     Size size = MediaQuery.of(context).size;
     Movie movie = getMovie[backgroundIndex];
 
-  /*  ScreenUtil.init(
-      BoxConstraints(
-        maxWidth: size.width,
-        maxHeight: size.height,
-        design
-      )
-    );*/
+
 
     return Scaffold(
         body: Stack(
@@ -56,7 +50,7 @@ class _HomeState extends State<Home> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          AppSizedBox(height: 50,),
+          AppSizedBox(height: 50.h,),
           buildToolbar(size,'Top Rated',Icons.search,context),
           buildPager(size, backgroundIndex),
           buildMovieText(movie.name, movie.rate, size, movie.description),
@@ -73,7 +67,7 @@ class _HomeState extends State<Home> {
         Navigator.push(context, MaterialPageRoute(builder:(context)=>DetailScreen(getMovie[backgroundIndex])));
       },
      child:Container(
-        height: size.height * .6,
+        height: (size.height * .6).h,
         child: PageView.builder(
           onPageChanged: (pageIndex) {
             setState(() {
@@ -93,20 +87,20 @@ class _HomeState extends State<Home> {
   Widget buildMovieText(
       String movieName, double rate, Size size, String description) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
       child: Column(
         children: [
           Row(
             children: [
-              AppSizedBox(width: 20,),
+              AppSizedBox(width: 20.w,),
               AppText(text: movieName, fontWeight: FontWeight.bold, textSize: 30,),
               Spacer(),
               AppText(text: rate.toString(), fontWeight: FontWeight.bold, textSize: 20,),
               AppText(text: '/10', textSize: 20, color: Colors.white.withOpacity(.5),),
-              AppSizedBox(width: 20,),
+              AppSizedBox(width: 20.w,),
             ],
           ),
-          AppSizedBox(height: 20,),
+          AppSizedBox(height: 20.h,),
           Container(
               margin: EdgeInsets.only(left: 20, right: 20),
               child: AppText(text: description))
@@ -124,12 +118,12 @@ Widget appImage(String img, Size size,) {
 
 Widget buildToolbar(Size size,String text,IconData icon, BuildContext context,{String data = ''}) {
   return Container(
-    height: 70, // TODO: use screen util
+    height: 70.h, // TODO: use screen util
     child: InkWell(
       onTap: () {},
       child: Row(
         children: [
-          AppSizedBox(width: 20,),
+          AppSizedBox(width: 20.w,),
           AppText(text:text ,color: Colors.white,textSize: 30,fontWeight:FontWeight.bold),
            data == '' ?Icon(
              Icons.arrow_drop_down_rounded,
@@ -145,7 +139,7 @@ Widget buildToolbar(Size size,String text,IconData icon, BuildContext context,{S
                 :null;
           }, icon: Icon(icon)),
           AppSizedBox(
-            width: 20,
+            width: 20.w,
           ),
         ],
       ),

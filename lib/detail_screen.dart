@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/home.dart';
 import 'package:movie_app/movie.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'app_sized_box.dart';
 import 'build_text.dart';
@@ -24,10 +25,10 @@ class DetailScreen extends StatelessWidget {
 
   Widget detailsBody(BuildContext context, Size size) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      AppSizedBox(height: 45,),
+      AppSizedBox(height: 45.h,),
       detailScreenToolBar(context),
       movieInfo(size),
-      AppSizedBox(height: 15,),
+      AppSizedBox(height: 15.h,),
       buildToolbar(size, movie.name, Icons.bookmark, context,data: movie.year),
       movieVideo(size),
       overView('Overview'),
@@ -41,7 +42,7 @@ class DetailScreen extends StatelessWidget {
 
   Widget artistList(Size size) {
     return Container(
-     height:60,
+     height:60.h,
      width:size.width,
      margin:  EdgeInsets.only(left: 20, right: 20,),
      child: ListView.builder(
@@ -49,8 +50,8 @@ class DetailScreen extends StatelessWidget {
          itemCount: movie.artist.length,
          itemBuilder: (context,int index){
            return Container(
-               width: 60,
-               height: 50,
+               width: 60.w,
+               height: 50.h,
                padding: EdgeInsets.only(left: 10),
                child: CircleAvatar(child:Image.asset(movie.artist[index], fit: BoxFit.cover,)));
          }),
@@ -83,14 +84,14 @@ class DetailScreen extends StatelessWidget {
         children: [
           Container(
             height: size.height * .2 ,
-            width: 110,
+            width: 110.w,
             margin: EdgeInsets.only(
-              left: 20,
+              left: 20.w,
             ),
             child: appImage(movie.imageTop, size),
           ),
           AppSizedBox(
-            width: 10,
+            width: 10.w,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,37 +99,37 @@ class DetailScreen extends StatelessWidget {
             children: [
               AppText(text: 'Featured Crew', textSize: 12),
               AppSizedBox(
-                height: 10,
+                height: 10.h,
               ),
               AppText(
                 text: movie.writer,
                 fontWeight: FontWeight.bold,
-                textSize: 15,
+                textSize: 15.sp,
               ),
               AppText(
                 text: movie.writerStates,
-                textSize: 10,
+                textSize: 10.sp,
               ),
               AppSizedBox(
-                height: 10,
+                height: 10.h,
               ),
               AppText(
                 text: movie.director,
                 fontWeight: FontWeight.bold,
-                textSize: 15,
+                textSize: 15.sp,
               ),
               AppText(
                 text: movie.directorStates,
-                textSize: 10,
+                textSize: 10.sp,
               ),
               AppSizedBox(
-                height: 10,
+                height: 10.h,
               ),
               AppText(
                   text:
                       movie.movieType + '|' + movie.duration + '|' + movie.date,
                   color: Colors.white.withOpacity(.7),
-                  textSize: 12),
+                  textSize: 12.sp),
             ],
           ),
         ],
@@ -146,7 +147,7 @@ class DetailScreen extends StatelessWidget {
 
   Widget detailScreenToolBar(BuildContext context) {
     return Container(
-      height: 70, // TODO: use screen util
+      height: 70.h, // TODO: use screen util
       child: InkWell(
         onTap: () {
           Navigator.pop(context);
@@ -154,7 +155,7 @@ class DetailScreen extends StatelessWidget {
         child: Row(
           children: [
             AppSizedBox(
-              width: 20,
+              width: 20.w,
             ),
             Icon(
               Icons.arrow_back_ios,
@@ -167,17 +168,17 @@ class DetailScreen extends StatelessWidget {
             Spacer(),
             AppText(
               text: movie.rate.toString(),
-              textSize: 40,
+              textSize: 40.sp,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
             AppText(
               text: '/10',
               color: Colors.white.withOpacity(.7),
-              textSize: 20,
+              textSize: 20.sp,
             ),
             AppSizedBox(
-              width: 20,
+              width: 20.w,
             ),
           ],
         ),

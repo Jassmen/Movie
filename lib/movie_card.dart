@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'movie.dart';
 
@@ -19,7 +20,7 @@ class MovieCard extends StatelessWidget {
   Widget buildMovieImage(double cardWidth, double cardHeight, Size size,
       String img) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
       width: cardWidth,
       height: cardHeight,
       child:  Image.asset(
