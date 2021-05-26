@@ -139,8 +139,8 @@ class DetailScreen extends StatelessWidget {
 
   Widget moviePoster(Size size) {
     return Container(
-      height: size.height / 3,
-      width: size.width,
+      height: (size.height / 3).h,
+      width: (size.width).w,
       child: appImage(movie.movieImage, size),
     );
   }

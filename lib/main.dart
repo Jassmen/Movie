@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
             primaryColor: Colors.white ,
             iconTheme: IconThemeData(
                 color: Colors.white
-            )
+            ),
         ),
         home: Home(),
       ),
