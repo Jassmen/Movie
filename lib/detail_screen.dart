@@ -15,53 +15,65 @@ class DetailScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: Stack(
-          children: [
-            appImage(movie.imageBlur, size),
-            moviePoster(size),
-            detailsBody(context, size),
-          ],
-        ));
+      children: [
+        appImage(movie.imageBlur, size),
+        moviePoster(size),
+        detailsBody(context, size),
+      ],
+    ));
   }
 
   Widget detailsBody(BuildContext context, Size size) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      AppSizedBox(height: 45.h,),
+      AppSizedBox(
+        height: 45.h,
+      ),
       detailScreenToolBar(context),
       movieInfo(size),
-      AppSizedBox(height: 15.h,),
-      buildToolbar(size, movie.name, Icons.bookmark, context,data: movie.year),
+      AppSizedBox(
+        height: 15.h,
+      ),
+      buildToolbar(size, movie.name, Icons.bookmark, context, data: movie.year),
       movieVideo(size),
       overView('Overview'),
-      overView(movie.description,space: true,size: 12),
-      overView('Cast',space: true),
-     artistList(size)
-
-
+      overView(movie.description, space: true, size: 12),
+      overView('Cast', space: true),
+      artistList(size)
     ]);
   }
 
   Widget artistList(Size size) {
     return Container(
-     height:60.h,
-     width:size.width,
-     margin:  EdgeInsets.only(left: 20, right: 20,),
-     child: ListView.builder(
-         scrollDirection: Axis.horizontal,
-         itemCount: movie.artist.length,
-         itemBuilder: (context,int index){
-           return Container(
-               width: 60.w,
-               height: 50.h,
-               padding: EdgeInsets.only(left: 10),
-               child: CircleAvatar(child:Image.asset(movie.artist[index], fit: BoxFit.cover,)));
-         }),
-   );
+      height: 60.h,
+      width: size.width,
+      margin: EdgeInsets.only(
+        left: 20,
+        right: 20,
+      ),
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: movie.artist.length,
+          itemBuilder: (context, int index) {
+            return Container(
+                width: 60.w,
+                height: 60.w,
+                margin: EdgeInsets.symmetric(horizontal: 4.w),
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50.w),
+                    border: Border.all(color: Colors.white)),
+                child: Image.asset(
+                  movie.artist[index],
+                  fit: BoxFit.cover,
+                ));
+          }),
+    );
   }
 
-  Widget overView(String text, {bool space = false,double size= 16}) {
+  Widget overView(String text, {bool space = false, double size = 16}) {
     return Padding(
       padding: space
-          ? EdgeInsets.only(left: 20, right: 20,bottom: 10)
+          ? EdgeInsets.only(left: 20, right: 20, bottom: 10)
           : EdgeInsets.all(20),
       child: AppText(
         text: text,
@@ -83,7 +95,7 @@ class DetailScreen extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            height: size.height * .2 ,
+            height: size.height * .2,
             width: 110.w,
             margin: EdgeInsets.only(
               left: 20.w,
@@ -185,6 +197,4 @@ class DetailScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }
