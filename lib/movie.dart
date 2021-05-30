@@ -93,6 +93,9 @@ class Movie {
   final String backdrop;
   final String poster;
 
+  String trailedId='';
+
+
   Movie(
       {required this.id,
         required this.title,

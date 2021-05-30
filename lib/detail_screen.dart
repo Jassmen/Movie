@@ -1,4 +1,3 @@
-/*
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -16,10 +15,11 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    movie.trailedId =movie.id.toString();
     return Scaffold(
         body: Stack(
       children: [
-        appImage(movie.imageTop, size),
+        appImage('https://image.tmdb.org/t/p/original${movie.poster}', size),
         moviePoster(size),
         detailsBody(context, size),
       ],
@@ -27,22 +27,24 @@ class DetailScreen extends StatelessWidget {
   }
 
   Widget detailsBody(BuildContext context, Size size) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      AppSizedBox(
-        height: 45.h,
-      ),
-      detailScreenToolBar(context),
-      movieInfo(size),
-      AppSizedBox(
-        height: 15.h,
-      ),
-      buildToolbar(size, movie.name, Icons.bookmark, context, data: movie.year),
-      movieVideo(size),
-      overView('Overview'),
-      overView(movie.description, space: true, size: 12),
-      overView('Cast', space: true),
-      artistList(size)
-    ]);
+    return SingleChildScrollView(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        AppSizedBox(
+          height: 45.h,
+        ),
+        detailScreenToolBar(context),
+        movieInfo(size),
+        AppSizedBox(
+          height: 15.h,
+        ),
+        buildToolbar(size, movie.title, Icons.bookmark, context, data: movie.date),
+        movieVideo(size),
+        overView('Overview'),
+        overView(movie.overview, space: true, size: 12),
+        overView('Cast', space: true),
+        artistList(size)
+      ]),
+    );
   }
 
   Widget artistList(Size size) {
@@ -53,7 +55,7 @@ class DetailScreen extends StatelessWidget {
         left: 20.w,
         right: 20.w,
       ),
-      child: ListView.builder(
+ /*child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: movie.artist.length,
           itemBuilder: (context, int index) {
@@ -69,7 +71,8 @@ class DetailScreen extends StatelessWidget {
                   movie.artist[index],
                   fit: BoxFit.cover,
                 ));
-          }),
+          }),*/
+
     );
   }
 
@@ -90,7 +93,7 @@ class DetailScreen extends StatelessWidget {
         height: .25.sh,
         width: 1.sw,
         margin: EdgeInsets.only(right: 20, left: 20),
-        child: appImage(movie.video, size));
+        child: appImage('https://www.youtube.com/embed/${movie.trailedId}', size));//////////////////
   }
 
   Widget movieInfo(Size size) {
@@ -98,55 +101,65 @@ class DetailScreen extends StatelessWidget {
       margin: EdgeInsets.only(top:13.w),
       child: Row(
         children: [
-          Container(
-            height: .2.sh,
-            width: 110.w,
-            margin: EdgeInsets.only(
-              left: 20.w,
-            ),
-            child: appImage(movie.imageTop, size)),
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: .2.sh,
+              width: 110.w,
+              margin: EdgeInsets.only(
+                left: 20.w,
+              ),
+              child: appImage('https://image.tmdb.org/t/p/original${movie.poster}', size)),
+          ),
 
           AppSizedBox(
             width: 10.w,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AppText(text: 'Featured Crew', textSize: 12),
-              AppSizedBox(
-                height: 10.h,
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AppText(text: 'Featured Crew', textSize: 12),
+                  AppSizedBox(
+                    height: 10.h,
+                  ),
+                  AppText(
+                    text: movie.title,///////////////////
+                    fontWeight: FontWeight.bold,
+                    textSize: 15.sp,
+                  ),
+                  AppText(
+                    text: movie.title,//////////////////
+                    textSize: 10.sp,
+                  ),
+                  AppSizedBox(
+                    height: 10.h,
+                  ),
+                  AppText(
+                    text: movie.title,//////////////////
+                    fontWeight: FontWeight.bold,
+                    textSize: 15.sp,
+                  ),
+                  AppText(
+                    text: movie.title,//////////////////
+                    textSize: 10.sp,
+                  ),
+                  AppSizedBox(
+                    height: 10.h,
+                  ),
+ /*AppText(
+                      text:
+                          movie.movieType + '|' + movie.duration + '|' + movie.date,
+                      color: Colors.white.withOpacity(.7),
+                      textSize: 12.sp),*/
+
+                ],
               ),
-              AppText(
-                text: movie.writer,
-                fontWeight: FontWeight.bold,
-                textSize: 15.sp,
-              ),
-              AppText(
-                text: movie.writerStates,
-                textSize: 10.sp,
-              ),
-              AppSizedBox(
-                height: 10.h,
-              ),
-              AppText(
-                text: movie.director,
-                fontWeight: FontWeight.bold,
-                textSize: 15.sp,
-              ),
-              AppText(
-                text: movie.directorStates,
-                textSize: 10.sp,
-              ),
-              AppSizedBox(
-                height: 10.h,
-              ),
-              AppText(
-                  text:
-                      movie.movieType + '|' + movie.duration + '|' + movie.date,
-                  color: Colors.white.withOpacity(.7),
-                  textSize: 12.sp),
-            ],
+            ),
           ),
         ],
       ),
@@ -162,7 +175,7 @@ class DetailScreen extends StatelessWidget {
       child: Container(
         height: (1 / 3).sh,
         width: 1.sw,
-        child: appImage(movie.movieImage, size),
+        child: appImage('https://image.tmdb.org/t/p/original${movie.backdrop}', size),
       ),
     );
   }
@@ -213,4 +226,3 @@ class DetailScreen extends StatelessWidget {
     ));
   }
 }
-*/

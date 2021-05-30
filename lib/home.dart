@@ -25,7 +25,7 @@ int backgroundIndex = 0;
 class _HomeState extends State<Home> {
   PageController pageController = PageController();
   List<Movie> movies =[];
-  
+
   void fun() => {};
 
   @override
@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
     setState(() {
       movies = movie;
     });
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +53,11 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
         body: Stack(
-      children: [
-        appImage('https://image.tmdb.org/t/p/original${movie.poster}', size),
-        buildBody(size, movies[backgroundIndex])
-      ],
-    ));
+          children: [
+            appImage('https://image.tmdb.org/t/p/original${movie.poster}', size),
+            buildBody(size, movies[backgroundIndex])
+          ],
+        ));
   }
 
   Widget buildBody(Size size, Movie movie) {
@@ -68,26 +68,25 @@ class _HomeState extends State<Home> {
               sigmaY:10.0
           ),
           child: Column(
-        children: [
-          AppSizedBox(
-            height: 50.h,
-          ),
-          buildToolbar(size, 'Top Rated', Icons.search, context),
-          buildPager(size, backgroundIndex),
-          buildMovieText(movie.title, movie.rate, size, movie.overview),
-        ],
-      )),
+            children: [
+              AppSizedBox(
+                height: 50.h,
+              ),
+              buildToolbar(size, 'Top Rated', Icons.search, context),
+              buildPager(size, backgroundIndex),
+              buildMovieText(movie.title, movie.rate, size, movie.overview),
+            ],
+          )),
     );
   }
 
   Widget buildPager(Size size, int page) {
     return InkWell(
       onTap: () {
-
- /*Navigator.push(
+        Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DetailScreen(movies[backgroundIndex])));*/
+                builder: (context) => DetailScreen(movies[backgroundIndex])));
 
       },
       child: Container(
@@ -178,14 +177,14 @@ Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
               fontWeight: FontWeight.bold),
           data == ''
               ? Icon(
-                  Icons.arrow_drop_down_rounded,
-                  color: Colors.white,
-                  size: 30,
-                )
+            Icons.arrow_drop_down_rounded,
+            color: Colors.white,
+            size: 30,
+          )
               : AppText(
-                  text: '(' + data.toString() + ')',
-                  textSize: 15,
-                ),
+            text: '(' + data.toString() + ')',
+            textSize: 15,
+          ),
           Spacer(),
           IconButton(
               onPressed: () {
@@ -205,7 +204,3 @@ Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
     ),
   );
 }
-
-
-
-
