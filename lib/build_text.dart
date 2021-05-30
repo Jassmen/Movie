@@ -18,12 +18,13 @@ class AppText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
         text,
+     // maxLines:1,
         style:TextStyle(
             color:color,
             fontSize: textSize.sp,
             fontWeight: fontWeight
         ),
-      overflow: TextOverflow.clip,
+      overflow: TextOverflow.fade,
 
     );
   }

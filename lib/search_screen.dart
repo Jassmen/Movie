@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:movie_app/app_sized_box.dart';
@@ -18,7 +19,7 @@ class SearchScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: iconColor.withOpacity(.3),
       body: Padding(
-        padding: const EdgeInsets.only(right: 10, left: 10),
+        padding: EdgeInsets.only(right: 10.w, left: 10.w),
         child: Column(
           children: [
             AppSizedBox(
@@ -44,14 +45,14 @@ class SearchScreen extends StatelessWidget {
   Container listItem(Size size, int index) {
     return Container(
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 10),
+        padding:  EdgeInsets.only(left: 8.w, right: 8.w, bottom: 10.w),
         child: Row(
           children: [
             Container(
-              height: (size.height * .2).h,
+              height: .2.sh,
               width: 110.w,
               margin: EdgeInsets.only(
-                left: 10,
+                left: 10.w,
               ),
               child: appImage(getSearchedM[index].image, size),
             ),
@@ -64,7 +65,7 @@ class SearchScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: (size.width / 2).w,
+                    width: (1 / 2).sw,
                     child: Row(
                       children: [
                         AppText(
@@ -110,7 +111,7 @@ class SearchScreen extends StatelessWidget {
 
   Widget searchToolBar(Size size) {
     return Container(
-      width: size.width,
+      width: 1.sw,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Color(0xFF191919).withOpacity(.5),
@@ -144,16 +145,6 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
-/*Row(
-              children: [
-                IconButton(onPressed: (){},
-                    icon: Icon(Icons.search,color: iconColor,)),
-                AppText(text:'Thor',color: iconColor,),
-                Spacer(),
-                IconButton(onPressed: (){},
-                    icon: Icon(Icons.mic,color:iconColor)),
-              ],
-            )*/
 
   final List<SearchedMovie> getSearchedM = [
     SearchedMovie(
@@ -188,3 +179,4 @@ class SearchScreen extends StatelessWidget {
             ' the one-mile-wide \nstrait connecting San Francisco\n Bay and the Pacific Ocean.'),
   ];
 }
+*/

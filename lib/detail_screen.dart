@@ -1,3 +1,6 @@
+/*
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:movie_app/home.dart';
 import 'package:movie_app/movie.dart';
@@ -16,7 +19,7 @@ class DetailScreen extends StatelessWidget {
     return Scaffold(
         body: Stack(
       children: [
-        appImage(movie.imageBlur, size),
+        appImage(movie.imageTop, size),
         moviePoster(size),
         detailsBody(context, size),
       ],
@@ -45,10 +48,10 @@ class DetailScreen extends StatelessWidget {
   Widget artistList(Size size) {
     return Container(
       height: 60.h,
-      width: size.width,
+      width: 1.sw,
       margin: EdgeInsets.only(
-        left: 20,
-        right: 20,
+        left: 20.w,
+        right: 20.w,
       ),
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -73,8 +76,8 @@ class DetailScreen extends StatelessWidget {
   Widget overView(String text, {bool space = false, double size = 16}) {
     return Padding(
       padding: space
-          ? EdgeInsets.only(left: 20, right: 20, bottom: 10)
-          : EdgeInsets.all(20),
+          ? EdgeInsets.only(left: 20.w, right: 20.w, bottom: 10.w)
+          : EdgeInsets.all(20.w),
       child: AppText(
         text: text,
         textSize: size,
@@ -84,24 +87,25 @@ class DetailScreen extends StatelessWidget {
 
   Widget movieVideo(Size size) {
     return Container(
-        height: size.height / 4,
-        width: size.width,
+        height: .25.sh,
+        width: 1.sw,
         margin: EdgeInsets.only(right: 20, left: 20),
         child: appImage(movie.video, size));
   }
 
   Widget movieInfo(Size size) {
     return Container(
+      margin: EdgeInsets.only(top:13.w),
       child: Row(
         children: [
           Container(
-            height: size.height * .2,
+            height: .2.sh,
             width: 110.w,
             margin: EdgeInsets.only(
               left: 20.w,
             ),
-            child: appImage(movie.imageTop, size),
-          ),
+            child: appImage(movie.imageTop, size)),
+
           AppSizedBox(
             width: 10.w,
           ),
@@ -150,15 +154,26 @@ class DetailScreen extends StatelessWidget {
   }
 
   Widget moviePoster(Size size) {
-    return Container(
-      height: (size.height / 3).h,
-      width: (size.width).w,
-      child: appImage(movie.movieImage, size),
+    return BackdropFilter(
+      filter:ImageFilter.blur(
+        sigmaX:12.0,
+        sigmaY:12.0
+      ),
+      child: Container(
+        height: (1 / 3).sh,
+        width: 1.sw,
+        child: appImage(movie.movieImage, size),
+      ),
     );
   }
 
   Widget detailScreenToolBar(BuildContext context) {
-    return Container(
+    return BackdropFilter(
+        filter:ImageFilter.blur(
+        sigmaX:2.0,
+        sigmaY:2.0
+    ),
+    child: Container(
       height: 70.h, // TODO: use screen util
       child: InkWell(
         onTap: () {
@@ -195,6 +210,7 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }
+*/

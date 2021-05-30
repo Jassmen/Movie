@@ -1,11 +1,16 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/detail_screen.dart';
 import 'package:movie_app/movie.dart';
+import 'package:http/http.dart' as http;
+
 
 import 'app_sized_box.dart';
 import 'build_text.dart';
+import 'model/fetchMovie.dart';
 import 'movie.dart';
 import 'movie_card.dart';
 import 'search_screen.dart';
@@ -19,53 +24,71 @@ int backgroundIndex = 0;
 
 class _HomeState extends State<Home> {
   PageController pageController = PageController();
-
+  List<Movie> movies =[];
+  
   void fun() => {};
 
   @override
   void initState() {
+    allMovies();
     pageController = PageController(
       viewportFraction: .8,
       initialPage: 0,
     )..addListener(fun);
   }
 
+  void allMovies()  async {
+    final movie = await fetchMovie();
+    print(movie);
+    setState(() {
+      movies = movie;
+    });
+}
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    Movie movie = getMovie[backgroundIndex];
+    Movie movie = movies[backgroundIndex];
+    print('jkMovie -------------------> $movie');
 
     return Scaffold(
         body: Stack(
       children: [
-        appImage(movie.imageBlur, size),
-        buildBody(size, getMovie[backgroundIndex])
+        appImage('https://image.tmdb.org/t/p/original${movie.poster}', size),
+        buildBody(size, movies[backgroundIndex])
       ],
     ));
   }
 
   Widget buildBody(Size size, Movie movie) {
     return SingleChildScrollView(
-      child: Column(
+      child:BackdropFilter(
+          filter:ImageFilter.blur(
+              sigmaX:10.0,
+              sigmaY:10.0
+          ),
+          child: Column(
         children: [
           AppSizedBox(
             height: 50.h,
           ),
           buildToolbar(size, 'Top Rated', Icons.search, context),
           buildPager(size, backgroundIndex),
-          buildMovieText(movie.name, movie.rate, size, movie.description),
+          buildMovieText(movie.title, movie.rate, size, movie.overview),
         ],
-      ),
+      )),
     );
   }
 
   Widget buildPager(Size size, int page) {
     return InkWell(
       onTap: () {
-        Navigator.push(
+
+ /*Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DetailScreen(getMovie[backgroundIndex])));
+                builder: (context) => DetailScreen(movies[backgroundIndex])));*/
+
       },
       child: Container(
         height: .6.sh,
@@ -76,17 +99,17 @@ class _HomeState extends State<Home> {
             });
           },
           controller: pageController,
-          itemBuilder: (context, index) => MovieCard(getMovie[index]),
-          itemCount: getMovie.length,
+          itemBuilder: (context, index) => MovieCard(movies[index]),
+          itemCount: movies.length,
         ),
       ),
     );
   }
 
   Widget buildMovieText(
-      String movieName, double rate, Size size, String description) {
+      String movieName, String rate, Size size, String description) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
+      margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.w),
       child: Column(
         children: [
           Row(
@@ -94,20 +117,23 @@ class _HomeState extends State<Home> {
               AppSizedBox(
                 width: 20.w,
               ),
-              AppText(
-                text: movieName,
-                fontWeight: FontWeight.bold,
-                textSize: 30,
+              Expanded(
+                flex: 9,
+                child: AppText(
+                  text: movieName,
+                  fontWeight: FontWeight.bold,
+                  textSize: 20.sp,
+                ),
               ),
               Spacer(),
               AppText(
-                text: rate.toString(),
+                text: rate,
                 fontWeight: FontWeight.bold,
-                textSize: 20,
+                textSize: 20.sp,
               ),
               AppText(
                 text: '/10',
-                textSize: 20,
+                textSize: 20.sp,
                 color: Colors.white.withOpacity(.5),
               ),
               AppSizedBox(
@@ -127,17 +153,11 @@ class _HomeState extends State<Home> {
   }
 }
 
-Widget appImage(
-  String img,
-  Size size,
-) {
+Widget appImage(String img, Size size,) {
   return Container(
-      height: size.height,
-      width: size.width,
-      child: Image.asset(
-        img,
-        fit: BoxFit.cover,
-      ));
+      height:1.sh,
+      width:1.sw,
+      child: Image.network(img,fit: BoxFit.cover));
 }
 
 Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
@@ -169,10 +189,12 @@ Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
           Spacer(),
           IconButton(
               onPressed: () {
-                icon == Icons.search
-                    ? Navigator.push(context,
+                icon == Icons.search;
+
+/*? Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SearchScreen()))
-                    : null;
+                    : null;*/
+
               },
               icon: Icon(icon)),
           AppSizedBox(
@@ -184,86 +206,6 @@ Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
   );
 }
 
-List<Movie> getMovie = [
-  Movie(
-      'MoonLight',
-      'assets/img1.jpeg',
-      'assets/back1.jpeg',
-      'The Golden Gate Bridge '
-          'is a suspension bridge spanning the Golden Gate,'
-          ' the one-mile-wide strait connecting San Francisco Bay and the Pacific Ocean.',
-      7.5,
-      'assets/imgbacd12.jpeg',
-      'assets/imgbacd1.jpeg',
-      'Barry Jenkins',
-      'Directory,Screenphy',
-      'Tarell McCraney',
-      'Story',
-      'Dream',
-      '1h 51min',
-      '10/21/2016',
-      '2016',
-      'assets/video1.jpeg',
-      [
-        'assets/artst1.jpeg',
-        'assets/artst11.jpeg',
-        'assets/artst12.jpeg',
-        'assets/artst13.jpeg',
-        'assets/artst14.jpeg',
-        'assets/artst1.jpeg',
-        'assets/artst11.jpeg'
-      ]),
-  Movie(
-      'Joker',
-      'assets/img4.jpeg',
-      'assets/back4.jpeg',
-      'The Golden Gate Bridge '
-          'is a suspension bridge spanning the Golden Gate,'
-          ' the one-mile-wide strait connecting San Francisco Bay and the Pacific Ocean.',
-      7.2,
-      'assets/img4.jpeg',
-      'assets/img5.jpeg',
-      'Chase Palmer',
-      'Writer',
-      'Andy Muschietti',
-      'Director',
-      'Horror',
-      '2h 15min',
-      '09/06/2017',
-      '2017',
-      'assets/video5.jpeg',
-      [
-        'assets/artst21.jpeg',
-        'assets/artst22.jpeg',
-        'assets/artst23.jpeg',
-        'assets/artst21.jpeg',
-        'assets/artst22.jpeg',
-        'assets/artst23.jpeg',
-      ]),
-  Movie(
-      'Logan',
-      'assets/img3.jpeg',
-      'assets/video2.jpeg',
-      'DecorView setVisiblity'
-          'DecorView setVisiblityDecorView setVisiblity'
-          'DecorView setVisiblityDecorView setVisiblity',
-      7.3,
-      'assets/img3.jpeg',
-      'assets/video3.jpeg',
-      'Barry Jenkins',
-      'Directory,Screenphy',
-      'Tarell McCraney',
-      'Story',
-      'Dream',
-      '1h 51min',
-      '10/21/2016',
-      '2016',
-      'assets/video6.jpeg',
-      [
-        'assets/artst31.jpeg',
-        'assets/artst32.jpeg',
-        'assets/artst33.jpeg',
-        'assets/artst34.jpeg',
-        'assets/artst31.jpeg',
-      ]),
-];
+
+
+

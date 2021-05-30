@@ -12,9 +12,9 @@ class MovieCard extends StatelessWidget {
     Size size = MediaQuery
         .of(context)
         .size;
-    var cardWidth = size.width * .8;
-    var cardHeight = size.height * .65;
-    return buildMovieImage(cardWidth, cardHeight, size, movie.imageTop);
+    var cardWidth =  .8.sw;
+    var cardHeight =  .65.sh;
+    return buildMovieImage(cardWidth, cardHeight, size, 'https://image.tmdb.org/t/p/original${movie.poster}',);
   }
 
   Widget buildMovieImage(double cardWidth, double cardHeight, Size size,
@@ -23,10 +23,11 @@ class MovieCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       width: cardWidth,
       height: cardHeight,
-      child:  Image.asset(
+      child:Image.network(img,fit: BoxFit.cover)
+      /*  Image.asset(
           img,
           fit: BoxFit.cover,
-      ),
+      ),*/
     );
   }
 
