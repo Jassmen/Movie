@@ -162,7 +162,8 @@ Widget appImage(String img, Size size,) {
 Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
     {String data = ''}) {
   return Container(
-    height: 70.h, // TODO: use screen util
+    //height: 70.h, // TODO: use screen util
+    margin: EdgeInsets.only(bottom: 10.w),
     child: InkWell(
       onTap: () {},
       child: Row(
@@ -170,11 +171,14 @@ Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
           AppSizedBox(
             width: 20.w,
           ),
-          AppText(
-              text: text,
-              color: Colors.white,
-              textSize: 30,
-              fontWeight: FontWeight.bold),
+          Expanded(
+            flex: 9,
+            child: AppText(
+                text: text,
+                color: Colors.white,
+                textSize: 25.sp,
+                fontWeight: FontWeight.bold),
+          ),
           data == ''
               ? Icon(
             Icons.arrow_drop_down_rounded,
