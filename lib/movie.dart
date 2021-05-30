@@ -93,7 +93,7 @@ class Movie {
   final String backdrop;
   final String poster;
 
-  String trailedId='';
+//  String trailedId='';
 
 
   Movie(

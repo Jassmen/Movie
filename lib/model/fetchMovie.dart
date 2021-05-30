@@ -27,13 +27,16 @@ Future<List<Movie>> fetchMovie() async{
 
     }
 Future<String> fetchYouTubeId(int id) async {
+  final movie = await fetchMovie();
+
   final Dio _dio = Dio();
   const apiKey = '98b32984cf467bd24aba3f3bd5c7037c';
   const baseUrl = 'https://api.themoviedb.org/3';
   try {
-    final response = await _dio.get('$baseUrl/movie/$id/videos?$apiKey');
-    var youtubeId = response.data['results'][1]['key'];
-    print('Response2 -----------------------> ${response.data['results'][1]['key']}');
+    final response = await _dio.get('$baseUrl/movie/$id/videos?api_key=$apiKey');
+    var youtubeId = response.data['results'][0]['key'];
+    print('Response2 -----------------------> ${response.data['results'][0]['key']}');
+    print('YouTubeUrl -----------------------> $youtubeId');
     return youtubeId;
   } catch (error, stacktrace) {
     throw Exception(

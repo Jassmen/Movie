@@ -8,7 +8,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -28,14 +27,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/*MaterialApp(
-      title: 'Movie App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.white ,
-        iconTheme: IconThemeData(
-          color: Colors.white
-        )
-      ),
-      home: Home(),
-    );*/

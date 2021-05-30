@@ -30,14 +30,4 @@
 // */
 
 
-/*void youtubeUrl()  async {
-      //To get it from JSON
-      final youtubeId = await fetchYouTubeId(movies[backgroundIndex].id);
-      print(youtubeId);
-      setState(() {
-        trailingId = youtubeId;
-      });
-
-
-  }*/
 

@@ -26,6 +26,7 @@ class _HomeState extends State<Home> {
   PageController pageController = PageController();
   List<Movie> movies =[];
 
+
   void fun() => {};
 
   @override
@@ -42,8 +43,10 @@ class _HomeState extends State<Home> {
     print(movie);
     setState(() {
       movies = movie;
+
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
