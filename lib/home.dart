@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
         body: Stack(
           children: [
-            appImage('https://image.tmdb.org/t/p/original${movie.poster}', size),
+            appImage(movie.poster, size),
             buildBody(size, movies[backgroundIndex])
           ],
         ));
@@ -159,13 +159,12 @@ Widget appImage(String img, Size size,) {
   return Container(
       height:1.sh,
       width:1.sw,
-      child: Image.network(img,fit: BoxFit.cover));
+      child: Image.network('https://image.tmdb.org/t/p/original${img}',fit: BoxFit.cover));
 }
 
 Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
     {String data = ''}) {
   return Container(
-    //height: 70.h, // TODO: use screen util
     margin: EdgeInsets.only(bottom: 10.w),
     child: InkWell(
       onTap: () {},

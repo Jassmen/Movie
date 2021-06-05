@@ -33,6 +33,7 @@ dependencies:
   http:
   dio:
   video_player:
+  #youtube_player_flutter:
 
 
 dev_dependencies:
