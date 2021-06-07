@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
 import 'package:movie_app/detail_screen.dart';
 import 'package:movie_app/movie.dart';
 import 'package:http/http.dart' as http;
@@ -20,11 +23,12 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-int backgroundIndex = 0;
+
 
 class _HomeState extends State<Home> {
   PageController pageController = PageController();
   List<Movie> movies =[];
+  int backgroundIndex  = 0;
 
 
   void fun() => {};
@@ -32,6 +36,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     allMovies();
+    clearCache();
     pageController = PageController(
       viewportFraction: .8,
       initialPage: 0,
@@ -47,23 +52,29 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void clearCache(){
+    DefaultCacheManager().emptyCache();
+    imageCache!.clear();
+    imageCache!.clearLiveImages();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+
     Movie movie = movies[backgroundIndex];
-    print('jkMovie -------------------> $movie');
+
 
     return Scaffold(
         body: Stack(
           children: [
-            appImage(movie.poster, size),
-            buildBody(size, movies[backgroundIndex])
+            appImage(movie.poster),
+            buildBody(movies[backgroundIndex])
           ],
         ));
   }
 
-  Widget buildBody(Size size, Movie movie) {
+  Widget buildBody(Movie movie) {
     return SingleChildScrollView(
       child:BackdropFilter(
           filter:ImageFilter.blur(
@@ -75,15 +86,15 @@ class _HomeState extends State<Home> {
               AppSizedBox(
                 height: 50.h,
               ),
-              buildToolbar(size, 'Top Rated', Icons.search, context),
-              buildPager(size, backgroundIndex),
-              buildMovieText(movie.title, movie.rate, size, movie.overview),
+              buildToolbar( 'Top Rated', Icons.search, context),
+              buildPager( backgroundIndex),
+              buildMovieText(movie.title, movie.rate,  movie.overview),
             ],
           )),
     );
   }
 
-  Widget buildPager(Size size, int page) {
+  Widget buildPager(int page) {
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -108,8 +119,9 @@ class _HomeState extends State<Home> {
     );
   }
 
+
   Widget buildMovieText(
-      String movieName, String rate, Size size, String description) {
+      String movieName, String rate,String description) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.w),
       child: Column(
@@ -155,14 +167,21 @@ class _HomeState extends State<Home> {
   }
 }
 
-Widget appImage(String img, Size size,) {
+Widget appImage(String img) {
   return Container(
       height:1.sh,
       width:1.sw,
-      child: Image.network('https://image.tmdb.org/t/p/original${img}',fit: BoxFit.cover));
+      child:CachedNetworkImage(key:UniqueKey(),
+      fit:BoxFit.cover,
+      imageUrl: 'https://image.tmdb.org/t/p/original${img}',
+      placeholder: (context, url) => Container(color:Colors.black12),
+      errorWidget: (context, url, error) => Icon(Icons.error),),
+  );
+
 }
 
-Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
+
+Widget buildToolbar(String text, IconData icon, BuildContext context,
     {String data = ''}) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.w),
@@ -173,6 +192,13 @@ Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
           AppSizedBox(
             width: 20.w,
           ),
+          data == ''
+              ? Icon(
+            Icons.arrow_drop_down_rounded,
+            color: Colors.white,
+            size: 30,
+          )
+              :SizedBox(),
           Expanded(
             flex: 9,
             child: AppText(
@@ -181,22 +207,13 @@ Widget buildToolbar(Size size, String text, IconData icon, BuildContext context,
                 textSize: 25.sp,
                 fontWeight: FontWeight.bold),
           ),
-          data == ''
-              ? Icon(
-            Icons.arrow_drop_down_rounded,
-            color: Colors.white,
-            size: 30,
-          )
-              : AppText(
-            text: '(' + data.toString() + ')',
-            textSize: 15,
-          ),
+
           Spacer(),
           IconButton(
               onPressed: () {
                 icon == Icons.search;
 
-/*? Navigator.push(context,
+             /*? Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SearchScreen()))
                     : null;*/
 

@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:movie_app/home.dart';
 import 'package:movie_app/movie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 
@@ -24,22 +26,23 @@ class _DetailScreenState extends State<DetailScreen> {
   List<CastData> castList=[];
   late VideoPlayerController controller ;
   late Future<void> initializeVideoPlayerFuture;
+ // urlVideo = 'https://www.youtube.com/embed/$trailingId';
 
   @override
   void initState() {
     youtubeUrl();
-   castListUrl();
-    controller = VideoPlayerController.network('https://www.youtube.com/embed/$trailingId');
+    castListUrl();
+    clearCache();
+    /*controller = VideoPlayerController.network('https://www.youtube.com/embed/$trailingId');
     initializeVideoPlayerFuture = controller.initialize();
     controller.setVolume(1.0);
-    controller.addListener(() { });
-
-
+    controller.addListener(() { });*/
   }
+
 
   @override
   void dispose() {
-    controller.dispose();
+   // controller.dispose();
     super.dispose();
   }
 
@@ -50,12 +53,12 @@ class _DetailScreenState extends State<DetailScreen> {
     setState(() {
       trailingId = youtubeId;
     });
-
-
   }
 
-
-
+  void _launchURL() async =>
+      await canLaunch('https://www.youtube.com/embed/$trailingId') ?
+      await launch('https://www.youtube.com/embed/$trailingId')
+          : throw 'Could not launch '+'https://www.youtube.com/embed/$trailingId';
   void castListUrl() async{
     final crew = await fetchCastDATA(widget.movie.id);
     print(crew);
@@ -64,41 +67,60 @@ class _DetailScreenState extends State<DetailScreen> {
     });
   }
 
+  void clearCache(){
+    DefaultCacheManager().emptyCache();
+    imageCache!.clear();
+    imageCache!.clearLiveImages();
+    setState(() {});
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: Stack(
           children: [
-            appImage(widget.movie.poster, size),
-            moviePoster(size),
-            detailsBody(context, size),
+            appImage(widget.movie.poster),
+            moviePoster(),
+            detailsBody(context, ),
           ],
         ));
   }
 
-  Widget detailsBody(BuildContext context, Size size) {
-    return SingleChildScrollView(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        AppSizedBox(
-          height: 45.h,
+  Widget detailsBody(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      AppSizedBox(
+        height: 45.h,
+      ),
+      detailScreenToolBar(context),
+      movieInfo(),
+      AppSizedBox(
+        height: 15.h,
+      ),
+      Expanded(
+      child:SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment:CrossAxisAlignment.start,
+          children: [
+          buildToolbar(widget.movie.title, Icons.bookmark, context, data: widget.movie.date),
+          movieVideo(),
+          overView('Overview'),
+          overView(widget.movie.overview, space: true, size: 12),
+          overView('Cast', space: true),
+          artistList(),
+          AppSizedBox(
+              height: 10.h,
+            ),
+        ],
         ),
-        detailScreenToolBar(context),
-        movieInfo(size),
-        AppSizedBox(
-          height: 15.h,
-        ),
-        buildToolbar(size, widget.movie.title, Icons.bookmark, context, data: widget.movie.date),
-        movieVideo(size),
-        overView('Overview'),
-        overView(widget.movie.overview, space: true, size: 12),
-        overView('Cast', space: true),
-        artistList(size)
-      ]),
-    );
+      )
+        ,)
+
+
+    ]);
   }
 
-  Widget artistList(Size size) {
+  Widget artistList() {
     return Container(
       height: 60.h,
       width: 1.sw,
@@ -108,7 +130,7 @@ class _DetailScreenState extends State<DetailScreen> {
       ),
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: castList.length,
+          itemCount: castList.length > 10 ? 10:castList.length,
           itemBuilder: (context, int index) {
             return Container(
                 width: 60.w,
@@ -118,20 +140,8 @@ class _DetailScreenState extends State<DetailScreen> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50.w),
                     border: Border.all(color: Colors.white)),
-                child: appImage(castList[index].profilePath, size));
+                child: appImage(castList[index].profilePath));
           }),
-   /*   child:FutureBuilder<List<CastData>>(
-        future: fetchCast(widget.movie.id),
-        builder:(context,snapshot){
-          if (snapshot.hasError) print(snapshot.error);
-
-          return snapshot.hasData
-              ? castList(snapshot.data)
-              : Center(child: CircularProgressIndicator());
-
-
-        }
-      )*/
 
     );
   }
@@ -148,45 +158,23 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget movieVideo(Size size) {
+  Widget movieVideo() {
     return Container(
       height: .25.sh,
       width: 1.sw,
+      color:Colors.black,
       margin: EdgeInsets.only(right: 20.w, left: 20.w),
-       child: FutureBuilder(
-         future: initializeVideoPlayerFuture,
-         builder: (context,snapshot){
-           if( snapshot.connectionState == ConnectionState.done){
-             return Stack(
-               children: [
-                 AspectRatio(
-                     aspectRatio: controller.value.aspectRatio,
-                   child: VideoPlayer(controller),
-                 ),
-                 Center(
-                   child: IconButton(
-                     onPressed: (){
-                       setState(() {
-                         controller.value.isPlaying?
-                             controller.pause(): controller.play();
-                       });
-                     },
-                     icon: Icon(Icons.play_circle_outline_outlined),
-                   ),
-                 )
-               ],
-             );
-           }else{
-             return Center(
-               child: CircularProgressIndicator(),
-             );
-           }
-         },
-       )
+      child: Center(
+        child: IconButton(
+          onPressed:_launchURL,
+          icon: Icon(Icons.play_circle_outline_outlined,size:30),
+        ),
+      ),
+
     );
   }
 
-  Widget movieInfo(Size size) {
+  Widget movieInfo() {
     return Container(
       margin: EdgeInsets.only(top:13.w),
       child: Row(
@@ -199,7 +187,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 margin: EdgeInsets.only(
                   left: 20.w,
                 ),
-                child: appImage(widget.movie.poster, size)),
+                child: appImage(widget.movie.poster)),
           ),
 
           AppSizedBox(
@@ -256,7 +244,7 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget moviePoster(Size size) {
+  Widget moviePoster() {
     return BackdropFilter(
       filter:ImageFilter.blur(
           sigmaX:12.0,
@@ -265,7 +253,7 @@ class _DetailScreenState extends State<DetailScreen> {
       child: Container(
         height: (1 / 3).sh,
         width: 1.sw,
-        child: appImage(widget.movie.backdrop, size),
+        child: appImage(widget.movie.backdrop),
       ),
     );
   }

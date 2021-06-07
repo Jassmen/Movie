@@ -33,6 +33,9 @@ dependencies:
   http:
   dio:
   video_player:
+  cached_network_image: ^3.0.0
+  flutter_cache_manager:
+  url_launcher: ^6.0.6
   #youtube_player_flutter:
 
 
