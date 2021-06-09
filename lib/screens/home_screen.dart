@@ -6,36 +6,33 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
-import 'package:movie_app/detail_screen.dart';
+import 'package:movie_app/screens/detail_screen.dart';
 import 'package:movie_app/movie.dart';
 import 'package:http/http.dart' as http;
 
-
-import 'app_sized_box.dart';
-import 'build_text.dart';
-import 'model/fetchMovie.dart';
-import 'movie.dart';
-import 'movie_card.dart';
-import 'search_screen.dart';
+import '../app_sized_box.dart';
+import '../build_text.dart';
+import '../model/fetchMovie.dart';
+import '../movie.dart';
+import '../movie_card.dart';
+import '../search_screen.dart';
 
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
-int backgroundIndex  = 0;
+int backgroundIndex = 0;
 
 class _HomeState extends State<Home> {
   PageController pageController = PageController();
-  List<Movie> movies =[];
-
-
+  List<Movie> movies = [];
 
   void fun() => {};
 
   @override
   void initState() {
-    allMovies();
+    // allMovies();
     clearCache();
     pageController = PageController(
       viewportFraction: .8,
@@ -43,16 +40,15 @@ class _HomeState extends State<Home> {
     )..addListener(fun);
   }
 
-  void allMovies()  async {
+  void allMovies() async {
     final movie = await fetchMovie();
     print(movie);
     setState(() {
       movies = movie;
-
     });
   }
 
-  void clearCache(){
+  void clearCache() {
     DefaultCacheManager().emptyCache();
     imageCache!.clear();
     imageCache!.clearLiveImages();
@@ -61,34 +57,36 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
-    Movie movie = movies[backgroundIndex];
-
-
     return Scaffold(
-        body: Stack(
-          children: [
-            appImage(movie.poster),
-            buildBody(movies[backgroundIndex])
-          ],
-        ));
+        body: FutureBuilder<List<Movie>>(
+            future: fetchMovie(),
+            builder: (context, snapshot) {
+              /// displaying data
+              if (snapshot.hasData) return _buildListData(snapshot);
+
+              // displaying progress
+              return _buildProgressWidget();
+            }));
+  }
+
+  Center _buildProgressWidget() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 
   Widget buildBody(Movie movie) {
     return SingleChildScrollView(
-      child:BackdropFilter(
-          filter:ImageFilter.blur(
-              sigmaX:10.0,
-              sigmaY:10.0
-          ),
+      child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
           child: Column(
             children: [
               AppSizedBox(
                 height: 50.h,
               ),
-              buildToolbar( 'Top Rated', Icons.search, context),
-              buildPager( backgroundIndex),
-              buildMovieText(movie.title, movie.rate,  movie.overview),
+              buildToolbar('Top Rated', Icons.search, context),
+              buildPager(backgroundIndex),
+              buildMovieText(movie.title, movie.rate, movie.overview),
             ],
           )),
     );
@@ -97,11 +95,7 @@ class _HomeState extends State<Home> {
   Widget buildPager(int page) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DetailScreen(movies[backgroundIndex])));
-
+        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailScreen(movies[backgroundIndex])));
       },
       child: Container(
         height: .6.sh,
@@ -119,9 +113,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-
-  Widget buildMovieText(
-      String movieName, String rate,String description) {
+  Widget buildMovieText(String movieName, String rate, String description) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.w),
       child: Column(
@@ -158,31 +150,36 @@ class _HomeState extends State<Home> {
           AppSizedBox(
             height: 20.h,
           ),
-          Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: AppText(text: description))
+          Container(margin: EdgeInsets.only(left: 20, right: 20), child: AppText(text: description))
         ],
       ),
+    );
+  }
+
+  Widget _buildListData(AsyncSnapshot<List<Movie>> snapshot) {
+    movies = snapshot.data ?? [];
+    Movie movie = movies[backgroundIndex];
+    return Stack(
+      children: [appImage(movie.poster), buildBody(movies[backgroundIndex])],
     );
   }
 }
 
 Widget appImage(String img) {
   return Container(
-      height:1.sh,
-      width:1.sw,
-      child:CachedNetworkImage(key:UniqueKey(),
-      fit:BoxFit.cover,
+    height: 1.sh,
+    width: 1.sw,
+    child: CachedNetworkImage(
+      key: UniqueKey(),
+      fit: BoxFit.cover,
       imageUrl: 'https://image.tmdb.org/t/p/original${img}',
-      placeholder: (context, url) => Container(color:Colors.black12),
-      errorWidget: (context, url, error) => Icon(Icons.error),),
+      placeholder: (context, url) => Container(color: Colors.black12),
+      errorWidget: (context, url, error) => Icon(Icons.error),
+    ),
   );
-
 }
 
-
-Widget buildToolbar(String text, IconData icon, BuildContext context,
-    {String data = ''}) {
+Widget buildToolbar(String text, IconData icon, BuildContext context, {String data = ''}) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.w),
     child: InkWell(
@@ -194,29 +191,23 @@ Widget buildToolbar(String text, IconData icon, BuildContext context,
           ),
           data == ''
               ? Icon(
-            Icons.arrow_drop_down_rounded,
-            color: Colors.white,
-            size: 30,
-          )
-              :SizedBox(),
+                  Icons.arrow_drop_down_rounded,
+                  color: Colors.white,
+                  size: 30,
+                )
+              : SizedBox(),
           Expanded(
             flex: 9,
-            child: AppText(
-                text: text,
-                color: Colors.white,
-                textSize: 25.sp,
-                fontWeight: FontWeight.bold),
+            child: AppText(text: text, color: Colors.white, textSize: 25.sp, fontWeight: FontWeight.bold),
           ),
-
           Spacer(),
           IconButton(
               onPressed: () {
                 icon == Icons.search;
 
-             /*? Navigator.push(context,
+                /*? Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SearchScreen()))
                     : null;*/
-
               },
               icon: Icon(icon)),
           AppSizedBox(

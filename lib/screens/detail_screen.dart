@@ -2,16 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:movie_app/home.dart';
+import 'package:movie_app/screens/home_screen.dart';
 import 'package:movie_app/movie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
-
-import 'app_sized_box.dart';
-import 'build_text.dart';
-import 'model/fetchMovie.dart';
+import '../app_sized_box.dart';
+import '../build_text.dart';
+import '../model/fetchMovie.dart';
 
 class DetailScreen extends StatefulWidget {
   final Movie movie;
@@ -23,12 +22,10 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  String trailingId ='';
-  List<CastData> castList=[];
+  String trailingId = '';
+  List<CastData> castList = [];
   List<MovieType> movieTypeL = [];
-  late VideoPlayerController controller ;
-
-
+  late VideoPlayerController controller;
 
   @override
   void initState() {
@@ -36,20 +33,15 @@ class _DetailScreenState extends State<DetailScreen> {
     castListUrl();
     clearCache();
     movieType();
-    /*controller = VideoPlayerController.network('https://www.youtube.com/embed/$trailingId');
-    initializeVideoPlayerFuture = controller.initialize();
-    controller.setVolume(1.0);
-    controller.addListener(() { });*/
   }
-
 
   @override
   void dispose() {
-   // controller.dispose();
+    // controller.dispose();
     super.dispose();
   }
 
-  void youtubeUrl()  async {
+  void youtubeUrl() async {
     print(widget.movie.id);
     final youtubeId = await fetchYouTubeId(widget.movie.id);
     print(youtubeId);
@@ -58,12 +50,11 @@ class _DetailScreenState extends State<DetailScreen> {
     });
   }
 
-  void _launchURL() async =>
-      await canLaunch('https://www.youtube.com/embed/$trailingId') ?
-      await launch('https://www.youtube.com/embed/$trailingId')
-          : throw 'Could not launch '+'https://www.youtube.com/embed/$trailingId';
+  void _launchURL() async => await canLaunch('https://www.youtube.com/embed/$trailingId')
+      ? await launch('https://www.youtube.com/embed/$trailingId')
+      : throw 'Could not launch ' + 'https://www.youtube.com/embed/$trailingId';
 
-  void castListUrl() async{
+  void castListUrl() async {
     final crew = await fetchCastDATA(widget.movie.id);
     print(crew);
     setState(() {
@@ -71,15 +62,14 @@ class _DetailScreenState extends State<DetailScreen> {
     });
   }
 
-  void clearCache(){
+  void clearCache() {
     DefaultCacheManager().emptyCache();
     imageCache!.clear();
     imageCache!.clearLiveImages();
     setState(() {});
   }
 
-
-  void movieType() async{
+  void movieType() async {
     final type = await fetchType(widget.movie.id);
     print('type:--------------->$type');
     setState(() {
@@ -91,16 +81,17 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
-          children: [
-            appImage(widget.movie.poster),
-            moviePoster(),
-            detailsBody(context, ),
-          ],
-        ));
+      children: [
+        appImage(widget.movie.poster),
+        moviePoster(),
+        detailsBody(
+          context,
+        ),
+      ],
+    ));
   }
 
   Widget detailsBody(BuildContext context) {
-
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       AppSizedBox(
         height: 45.h,
@@ -111,25 +102,23 @@ class _DetailScreenState extends State<DetailScreen> {
         height: 15.h,
       ),
       Expanded(
-      child:SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment:CrossAxisAlignment.start,
-          children: [
-          buildToolbar(widget.movie.title, Icons.bookmark, context, data: widget.movie.date),
-          movieVideo(),
-          overView('Overview'),
-          overView(widget.movie.overview, space: true, size: 12),
-          overView('Cast', space: true),
-          artistList(),
-          AppSizedBox(
-              height: 10.h,
-            ),
-        ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildToolbar(widget.movie.title, Icons.bookmark, context, data: widget.movie.date),
+              movieVideo(),
+              overView('Overview'),
+              overView(widget.movie.overview, space: true, size: 12),
+              overView('Cast', space: true),
+              artistList(),
+              AppSizedBox(
+                height: 10.h,
+              ),
+            ],
+          ),
         ),
       )
-        ,)
-
-
     ]);
   }
 
@@ -143,27 +132,22 @@ class _DetailScreenState extends State<DetailScreen> {
       ),
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: castList.length > 10 ? 10:castList.length,
+          itemCount: castList.length > 10 ? 10 : castList.length,
           itemBuilder: (context, int index) {
             return Container(
                 width: 60.w,
                 height: 60.w,
                 margin: EdgeInsets.symmetric(horizontal: 4.w),
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50.w),
-                    border: Border.all(color: Colors.white)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(50.w), border: Border.all(color: Colors.white)),
                 child: appImage(castList[index].profilePath));
           }),
-
     );
   }
 
   Widget overView(String text, {bool space = false, double size = 16}) {
     return Padding(
-      padding: space
-          ? EdgeInsets.only(left: 20.w, right: 20.w, bottom: 10.w)
-          : EdgeInsets.all(20.w),
+      padding: space ? EdgeInsets.only(left: 20.w, right: 20.w, bottom: 10.w) : EdgeInsets.all(20.w),
       child: AppText(
         text: text,
         textSize: size,
@@ -175,21 +159,20 @@ class _DetailScreenState extends State<DetailScreen> {
     return Container(
       height: .25.sh,
       width: 1.sw,
-      color:Colors.black,
+      color: Colors.black,
       margin: EdgeInsets.only(right: 20.w, left: 20.w),
       child: Center(
         child: IconButton(
-          onPressed:_launchURL,
-          icon: Icon(Icons.play_circle_outline_outlined,size:30),
+          onPressed: _launchURL,
+          icon: Icon(Icons.play_circle_outline_outlined, size: 30),
         ),
       ),
-
     );
   }
 
   Widget movieInfo() {
     return Container(
-      margin: EdgeInsets.only(top:13.w),
+      margin: EdgeInsets.only(top: 13.w),
       child: Row(
         children: [
           Expanded(
@@ -202,7 +185,6 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 child: appImage(widget.movie.poster)),
           ),
-
           AppSizedBox(
             width: 10.w,
           ),
@@ -219,24 +201,24 @@ class _DetailScreenState extends State<DetailScreen> {
                     height: 10.h,
                   ),
                   AppText(
-                    text: widget.movie.title,///////////////////
+                    text: widget.movie.title, ///////////////////
                     fontWeight: FontWeight.bold,
                     textSize: 15.sp,
                   ),
                   AppText(
-                    text: widget.movie.title,//////////////////
+                    text: widget.movie.title, //////////////////
                     textSize: 10.sp,
                   ),
                   AppSizedBox(
                     height: 10.h,
                   ),
                   AppText(
-                    text: widget.movie.title,//////////////////
+                    text: widget.movie.title, //////////////////
                     fontWeight: FontWeight.bold,
                     textSize: 15.sp,
                   ),
                   AppText(
-                    text: widget.movie.title,//////////////////
+                    text: widget.movie.title, //////////////////
                     textSize: 10.sp,
                   ),
                   AppSizedBox(
@@ -247,8 +229,6 @@ class _DetailScreenState extends State<DetailScreen> {
                     +' | '+ widget.movie.date,
                     textSize: 12.sp,
                   )*/
-
-
                 ],
               ),
             ),
@@ -260,10 +240,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget moviePoster() {
     return BackdropFilter(
-      filter:ImageFilter.blur(
-          sigmaX:12.0,
-          sigmaY:12.0
-      ),
+      filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
       child: Container(
         height: (1 / 3).sh,
         width: 1.sw,
@@ -274,10 +251,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget detailScreenToolBar(BuildContext context) {
     return BackdropFilter(
-        filter:ImageFilter.blur(
-            sigmaX:2.0,
-            sigmaY:2.0
-        ),
+        filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
         child: Container(
           height: 70.h, // TODO: use screen util
           child: InkWell(
@@ -293,10 +267,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   Icons.arrow_back_ios,
                   color: Colors.white.withOpacity(.7),
                 ),
-                AppText(
-                    text: 'Top Rated',
-                    color: Colors.white.withOpacity(.7),
-                    fontWeight: FontWeight.bold),
+                AppText(text: 'Top Rated', color: Colors.white.withOpacity(.7), fontWeight: FontWeight.bold),
                 Spacer(),
                 AppText(
                   text: widget.movie.rate.toString(),
@@ -318,6 +289,3 @@ class _DetailScreenState extends State<DetailScreen> {
         ));
   }
 }
-
-
-
