@@ -15,8 +15,9 @@ import 'model/fetchMovie.dart';
 
 class DetailScreen extends StatefulWidget {
   final Movie movie;
+  //final int index;
+  //DetailScreen(this.movie, this.index);
   DetailScreen(this.movie);
-
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }
@@ -24,15 +25,17 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   String trailingId ='';
   List<CastData> castList=[];
+  List<MovieType> movieTypeL = [];
   late VideoPlayerController controller ;
-  late Future<void> initializeVideoPlayerFuture;
- // urlVideo = 'https://www.youtube.com/embed/$trailingId';
+
+
 
   @override
   void initState() {
     youtubeUrl();
     castListUrl();
     clearCache();
+    movieType();
     /*controller = VideoPlayerController.network('https://www.youtube.com/embed/$trailingId');
     initializeVideoPlayerFuture = controller.initialize();
     controller.setVolume(1.0);
@@ -59,6 +62,7 @@ class _DetailScreenState extends State<DetailScreen> {
       await canLaunch('https://www.youtube.com/embed/$trailingId') ?
       await launch('https://www.youtube.com/embed/$trailingId')
           : throw 'Could not launch '+'https://www.youtube.com/embed/$trailingId';
+
   void castListUrl() async{
     final crew = await fetchCastDATA(widget.movie.id);
     print(crew);
@@ -75,6 +79,14 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
 
+  void movieType() async{
+    final type = await fetchType(widget.movie.id);
+    print('type:--------------->$type');
+    setState(() {
+      movieTypeL = type;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,6 +100,7 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Widget detailsBody(BuildContext context) {
+
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       AppSizedBox(
         height: 45.h,
@@ -230,10 +243,11 @@ class _DetailScreenState extends State<DetailScreen> {
                     height: 10.h,
                   ),
                   /*AppText(
-                      text:
-                          movie.movieType + '|' + movie.duration + '|' + movie.date,
-                      color: Colors.white.withOpacity(.7),
-                      textSize: 12.sp),*/
+                    text:movieTypeL[widget.index].type
+                    +' | '+ widget.movie.date,
+                    textSize: 12.sp,
+                  )*/
+
 
                 ],
               ),

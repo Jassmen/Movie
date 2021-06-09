@@ -23,12 +23,12 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-
+int backgroundIndex  = 0;
 
 class _HomeState extends State<Home> {
   PageController pageController = PageController();
   List<Movie> movies =[];
-  int backgroundIndex  = 0;
+
 
 
   void fun() => {};

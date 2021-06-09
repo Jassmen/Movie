@@ -5,6 +5,7 @@
 /// 5 - Add HeightBox , WidthBox Widgets  and use it in all the app
 /// 6 - Remove all Commented Code
 /// 7 - Remove unused prints
+/// late Future<void> initializeVideoPlayerFuture;
 /*       child: FutureBuilder(
          future: initializeVideoPlayerFuture,
          builder: (context,snapshot){

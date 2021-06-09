@@ -27,7 +27,6 @@ class Movie {
         date: json['release_date'],
         backdrop: json['backdrop_path']
     );
-
 }
 }
 
@@ -49,6 +48,24 @@ class CastData{
     );
 
   }
+}
+
+class MovieType{
+  final int id;
+  final String type;
+
+  MovieType({
+    required this.id,
+    required this.type
+  });
+
+  factory MovieType.fromJson(Map<String , dynamic> json){
+    return MovieType(
+        id: json['id'],
+        type: json['name']
+    );
+  }
+
 }
 
 

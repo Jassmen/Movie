@@ -43,3 +43,17 @@ Future<List<CastData>> fetchCastDATA(int id) async{
         'Exception accoured: $error with stacktrace: $stacktrace');
   }
 }
+
+
+Future<List<MovieType>> fetchType(int id) async{
+  try{
+    final url= '$baseUrl/movie/$id?api_key=$apiKey';
+    final response = await _dio.get(url);
+    var type = response.data['genres'] as List;
+    List<MovieType> movieType = type.map((e) => MovieType.fromJson(e)).toList();
+    print('response: -------------------------> ${response.data['genres']}');
+    return movieType;
+  }catch(error,stacktrace){
+    throw Exception( 'Exception accoured: $error with stacktrace: $stacktrace');
+  }
+}
