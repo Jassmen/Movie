@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/widgets/artistList.dart';
 import 'package:movie_app/widgets/video.dart';
 
-import '../app_sized_box.dart';
-import '../build_text.dart';
+import '../widgets/app_sized_box.dart';
+import '../widgets/build_text.dart';
 import '../services/fetchMovie.dart';
 
 class DetailScreen extends StatefulWidget {

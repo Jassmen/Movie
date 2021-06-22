@@ -1,16 +1,19 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:movie_app/bloc/bloc.dart';
+import 'package:movie_app/bloc/states.dart';
 import 'package:movie_app/screens/detail_screen.dart';
 import 'package:movie_app/movie.dart';
 
-import '../app_sized_box.dart';
-import '../build_text.dart';
+import '../widgets/app_sized_box.dart';
+import '../widgets/build_text.dart';
 import '../services/fetchMovie.dart';
 import '../movie.dart';
-import '../movie_card.dart';
+import '../widgets/movie_card.dart';
 
 
 class Home extends StatefulWidget {
@@ -35,21 +38,29 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: FutureBuilder<List<Movie>>(
-            future: fetchMovie(),
-            builder: (context, snapshot) {
-              /// displaying data
-              if (snapshot.hasData) return _buildListData(snapshot);
+    return BlocProvider(
+      create: (BuildContext context)=> MovieBloc(),
+      child: BlocConsumer<MovieBloc,MovieStatus>(
+        listener: (context, state){},
+        builder:(context,state){
+          return Scaffold(
+              body: FutureBuilder<List<Movie>>(
+                  future: fetchMovie(),
+                  builder: (context, snapshot) {
+                    /// displaying data
+                    if (snapshot.hasData) return _buildListData(snapshot);
 
-              /// displaying progress
-              return buildProgressWidget();
-            }
-        )
+                    /// displaying progress
+                    return buildProgressWidget();
+                  }
+              )
+          );
+        },
+      ),
     );
   }
   Widget _buildListData(AsyncSnapshot<List<Movie>> snapshot) {
-    movies = snapshot.data ?? [];
+   movies = snapshot.data ?? [];
     Movie movie = movies[backgroundIndex];
     return Stack(
       children: [appImage(movie.poster), buildBody(movies[backgroundIndex])],
@@ -162,11 +173,11 @@ Widget buildToolbar(String text, IconData icon, BuildContext context, {String da
           Expanded(
               flex:9,
               child: AppText(text: text, color: Colors.white, textSize: 25.sp, fontWeight: FontWeight.bold)),
-          data == '' ? Icon(
+          /*data == '' ? Icon(
             Icons.arrow_drop_down_rounded,
             color: Colors.white,
             size: 30,
-          ) : SizedBox(),
+          ) : SizedBox(),*/
           Spacer(),
           IconButton(
               onPressed: () {

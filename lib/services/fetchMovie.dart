@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 final Dio _dio= Dio();
 const apiKey = '98b32984cf467bd24aba3f3bd5c7037c';
 const baseUrl = 'https://api.themoviedb.org/3';
+
+/////////Movie
 Future<List<Movie>> fetchMovie() async{
   try {
       final url = '$baseUrl/movie/now_playing?api_key=$apiKey';
@@ -20,6 +22,7 @@ Future<List<Movie>> fetchMovie() async{
     }
  }
 
+/////////YouTube
 Future<String> fetchYouTubeId(int id) async {
   try {
     final response = await _dio.get('$baseUrl/movie/$id/videos?api_key=$apiKey');
@@ -31,6 +34,7 @@ Future<String> fetchYouTubeId(int id) async {
   }
 }
 
+/////////Cast
 Future<List<CastData>> fetchCastDATA(int id) async{
   try{
     final response = await _dio.get('$baseUrl/movie/$id/credits?api_key=$apiKey');
@@ -44,7 +48,7 @@ Future<List<CastData>> fetchCastDATA(int id) async{
   }
 }
 
-
+/////////MovieType
 Future<List<MovieType>> fetchType(int id) async{
   try{
     final url= '$baseUrl/movie/$id?api_key=$apiKey';

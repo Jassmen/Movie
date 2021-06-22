@@ -1,4 +1,7 @@
-class Movie {
+import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+
+class Movie extends Equatable {
   final int id;
   final String title;
   final String overview;
@@ -28,10 +31,13 @@ class Movie {
         backdrop: json['backdrop_path']
     );
 }
+
+  @override
+  List<Object?> get props => [id,title,poster,rate,overview,date,backdrop];
 }
 
 
-class CastData{
+class CastData extends Equatable{
   final String name;
   final String profilePath;
   final String character;
@@ -48,9 +54,13 @@ class CastData{
     );
 
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name,profilePath,character];
 }
 
-class MovieType{
+class MovieType extends Equatable{
   final int id;
   final String type;
 
@@ -65,6 +75,10 @@ class MovieType{
         type: json['name']
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id,type];
 
 }
 
