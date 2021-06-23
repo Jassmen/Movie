@@ -55,7 +55,6 @@ Future<List<MovieType>> fetchType(int id) async{
     final response = await _dio.get(url);
     var type = response.data['genres'] as List;
     List<MovieType> movieType = type.map((e) => MovieType.fromJson(e)).toList();
-    print('response: -------------------------> ${response.data['genres']}');
     return movieType;
   }catch(error,stacktrace){
     throw Exception( 'Exception accoured: $error with stacktrace: $stacktrace');

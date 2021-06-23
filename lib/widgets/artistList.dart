@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/bloc/artist/artist_bloc.dart';
+import 'package:movie_app/bloc/artist/artist_event.dart';
+import 'package:movie_app/bloc/artist/artist_state.dart';
 import 'package:movie_app/services/fetchMovie.dart';
 import 'package:movie_app/screens/home_screen.dart';
+import 'package:movie_app/widgets/build_text.dart';
 import '../movie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-List<CastData> castList=[];
-Widget artistList(int id) {
-  return FutureBuilder<List<CastData>>(
-      future: fetchCastDATA(id),
-      builder: (context,snapshot){
-        if(snapshot.hasData) return ArtistList(snapshot);
-        return buildProgressWidget();
-      });
+Widget artistList(int id,ArtistBloc artistBloc) {
+  return BlocProvider(
+  create: (_)=>artistBloc ,
+    child:buildBody(id));
 
 }
-
-Widget ArtistList(AsyncSnapshot<List<CastData>> snapshot) {
-  castList = snapshot.data ?? [];
+Widget buildBody(int id){
+  return BlocBuilder<ArtistBloc,ArtistState>(
+      builder: (context,state){
+        if(state is ArtistStateSuccess) return ArtistList(state.list);
+        if(state is ArtistStateFailed) return AppText(text: 'error',);
+        return buildProgressWidget();
+      });
+}
+Widget ArtistList(List<CastData> castList ) {
   return Container(
     height: 60.h,
     width: 1.sw,

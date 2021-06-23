@@ -45,7 +45,8 @@ class _HomeState extends State<Home> {
   }
 
   Scaffold _buildBody() {
-    return Scaffold(body: BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
+    return Scaffold(
+        body: BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
       /// displaying data
       if (state is MoviesStateSuccess) return _buildListData(state.list);
       if (state is MoviesStateFailed) return AppText(text: state.error);
@@ -81,7 +82,11 @@ class _HomeState extends State<Home> {
   Widget buildPager(int page) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailScreen(movies[backgroundIndex])));
+        print('Movie:${movies[backgroundIndex]}');
+        Navigator.push(context, MaterialPageRoute(builder:
+            (context) => DetailScreen(movies[backgroundIndex])
+
+        ));
       },
       child: Container(
         height: .6.sh,

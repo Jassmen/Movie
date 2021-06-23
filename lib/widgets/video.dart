@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/bloc/video/video_bloc.dart';
+import 'package:movie_app/bloc/video/video_event.dart';
+import 'package:movie_app/bloc/video/video_state.dart';
 import 'package:movie_app/services/fetchMovie.dart';
 import 'package:movie_app/screens/home_screen.dart';
+import 'package:movie_app/widgets/build_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -11,15 +16,27 @@ void launchURL() async => await canLaunch('https://www.youtube.com/embed/$traili
     : throw 'Could not launch ' + 'https://www.youtube.com/embed/$trailingId';
 
 String trailingId='';
-Widget movieVideo(int id) {
-  return FutureBuilder<String>(
-    future: fetchYouTubeId(id),
-    builder: (context,snapshot){
-      if(snapshot.hasData) {
-        trailingId = snapshot.data ?? '';
+
+Widget movieVideo(int id,BuildContext context,VideoBloc videoBloc) {
+  return BlocProvider(
+    create: (_)=>videoBloc,
+    child:buildBody(id),
+
+  );
+}
+
+Widget buildBody(int id) {
+
+  return BlocBuilder<VideoBloc,VideoState>(builder: (context,state){
+
+    if(state is VideoStateSuccess) {
+        trailingId =state.videoUrl;
         return appVideoContainer();
       }
-      return videoProgressContainer();
+    if(state is VideoStateFailed) {
+      return Center(child: AppText(text:'Error',));
+      }
+    return videoProgressContainer();
     },
   );
 }

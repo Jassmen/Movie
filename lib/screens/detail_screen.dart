@@ -1,5 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:movie_app/bloc/artist/artist_bloc.dart';
+import 'package:movie_app/bloc/artist/artist_event.dart';
+import 'package:movie_app/bloc/video/video_bloc.dart';
+import 'package:movie_app/bloc/video/video_event.dart';
 import 'package:movie_app/screens/home_screen.dart';
 import 'package:movie_app/movie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,9 +22,15 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+
   List<MovieType> movieTypeL = [];
+  VideoBloc videoBloc = VideoBloc();
+  ArtistBloc artistBloc = ArtistBloc();
+
   @override
   void initState() {
+    videoBloc.add(VideoEventFetch(id: widget.movie.id));
+    artistBloc.add(ArtistEventFetch(id: widget.movie.id));
     movieType();
   }
   void movieType() async {
@@ -57,11 +67,11 @@ class _DetailScreenState extends State<DetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildToolbar(widget.movie.title, Icons.bookmark, context, data: widget.movie.date),
-              movieVideo(widget.movie.id),
+              movieVideo(widget.movie.id,context,videoBloc),
               overView('Overview'),
               overView(widget.movie.overview, space: true, size: 12),
               overView('Cast', space: true),
-              artistList(widget.movie.id),
+              artistList(widget.movie.id,artistBloc),
               AppSizedBox(height: 10.h),
             ],
           ),
