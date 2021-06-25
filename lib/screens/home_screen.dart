@@ -20,33 +20,30 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-int backgroundIndex = 0;
-
 class _HomeState extends State<Home> {
-  PageController pageController = PageController();
+  final PageController pageController = PageController(viewportFraction: .8, initialPage: 0);
+
   List<Movie> movies = [];
-  MoviesBloc moviesBloc = MoviesBloc();
+
+  int backgroundIndex = 0;
+
   void fun() => {};
   @override
   void initState() {
-    moviesBloc.add(MoviesEventFetch());
-    pageController = PageController(
-      viewportFraction: .8,
-      initialPage: 0,
-    )..addListener(fun);
+    pageController.addListener(fun);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => moviesBloc,
+      create: (_) => MoviesBloc()..add(MoviesEventFetch()),
       child: _buildBody(),
     );
   }
 
   Scaffold _buildBody() {
-    return Scaffold(
-        body: BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
+    return Scaffold(body: BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
       /// displaying data
       if (state is MoviesStateSuccess) return _buildListData(state.list);
       if (state is MoviesStateFailed) return AppText(text: state.error);
@@ -83,10 +80,7 @@ class _HomeState extends State<Home> {
     return InkWell(
       onTap: () {
         print('Movie:${movies[backgroundIndex]}');
-        Navigator.push(context, MaterialPageRoute(builder:
-            (context) => DetailScreen(movies[backgroundIndex])
-
-        ));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailScreen(movies[backgroundIndex])));
       },
       child: Container(
         height: .6.sh,

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/bloc/artist/artist_bloc.dart';
 import 'package:movie_app/bloc/artist/artist_event.dart';
 import 'package:movie_app/bloc/video/video_bloc.dart';
@@ -14,45 +15,43 @@ import '../widgets/app_sized_box.dart';
 import '../widgets/build_text.dart';
 import '../services/fetchMovie.dart';
 
-class DetailScreen extends StatefulWidget {
+class DetailScreen extends StatelessWidget {
   final Movie movie;
   DetailScreen(this.movie);
-  @override
-  _DetailScreenState createState() => _DetailScreenState();
-}
-
-class _DetailScreenState extends State<DetailScreen> {
 
   List<MovieType> movieTypeL = [];
-  VideoBloc videoBloc = VideoBloc();
-  ArtistBloc artistBloc = ArtistBloc();
 
   @override
   void initState() {
-    videoBloc.add(VideoEventFetch(id: widget.movie.id));
-    artistBloc.add(ArtistEventFetch(id: widget.movie.id));
     movieType();
   }
+
   void movieType() async {
-    final type = await fetchType(widget.movie.id);
+    final type = await fetchType(movie.id);
     print('type:--------------->$type');
-    setState(() {
-      movieTypeL = type;
-    });
+    // setState(() {
+    //   movieTypeL = type;
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-      children: [
-        appImage(widget.movie.poster),
-        moviePoster(),
-        detailsBody(
-          context,
-        ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<VideoBloc>(create: (_) => VideoBloc()..add(VideoEventFetch(id: movie.id))),
+        BlocProvider<ArtistBloc>(create: (_) => ArtistBloc()..add(ArtistEventFetch(id: movie.id))),
       ],
-    ));
+      child: Scaffold(
+          body: Stack(
+        children: [
+          appImage(movie.poster),
+          moviePoster(),
+          detailsBody(
+            context,
+          ),
+        ],
+      )),
+    );
   }
 
   Widget detailsBody(BuildContext context) {
@@ -66,12 +65,12 @@ class _DetailScreenState extends State<DetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildToolbar(widget.movie.title, Icons.bookmark, context, data: widget.movie.date),
-              movieVideo(widget.movie.id,context,videoBloc),
+              buildToolbar(movie.title, Icons.bookmark, context, data: movie.date),
+              MovieVideo(id: movie.id),
               overView('Overview'),
-              overView(widget.movie.overview, space: true, size: 12),
+              overView(movie.overview, space: true, size: 12),
               overView('Cast', space: true),
-              artistList(widget.movie.id,artistBloc),
+              ArtistList(id: movie.id),
               AppSizedBox(height: 10.h),
             ],
           ),
@@ -79,14 +78,18 @@ class _DetailScreenState extends State<DetailScreen> {
       )
     ]);
   }
+
   Widget overView(String text, {bool space = false, double size = 16}) {
     return Padding(
       padding: space ? EdgeInsets.only(left: 20.w, right: 20.w, bottom: 10.w) : EdgeInsets.all(20.w),
-      child: AppText(text: text, textSize: size,),
+      child: AppText(
+        text: text,
+        textSize: size,
+      ),
     );
   }
 
-   Widget movieInfo() {
+  Widget movieInfo() {
     return Container(
       margin: EdgeInsets.only(top: 13.w),
       child: Row(
@@ -99,7 +102,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 margin: EdgeInsets.only(
                   left: 20.w,
                 ),
-                child: appImage(widget.movie.poster)),
+                child: appImage(movie.poster)),
           ),
           AppSizedBox(width: 10.w),
           Expanded(
@@ -113,40 +116,40 @@ class _DetailScreenState extends State<DetailScreen> {
                   AppText(text: 'Featured Crew', textSize: 12),
                   AppSizedBox(height: 10.h),
                   AppText(
-                    text: widget.movie.title, ///////////////////
+                    text: movie.title, ///////////////////
                     fontWeight: FontWeight.bold,
                     textSize: 15.sp,
                   ),
                   AppText(
-                    text: widget.movie.title, //////////////////
+                    text: movie.title, //////////////////
                     textSize: 10.sp,
                   ),
                   AppSizedBox(height: 10.h),
                   AppText(
-                    text: widget.movie.title, //////////////////
+                    text: movie.title, //////////////////
                     fontWeight: FontWeight.bold,
                     textSize: 15.sp,
                   ),
                   AppText(
-                    text: widget.movie.title, //////////////////
+                    text: movie.title, //////////////////
                     textSize: 10.sp,
                   ),
                   AppSizedBox(height: 10.h),
-                /*  FutureBuilder<List<MovieType>>(
-                      future: fetchType(widget.movie.id),
+                  /*  FutureBuilder<List<MovieType>>(
+                      future: fetchType(movie.id),
                       builder: (context,snapshot){
                         if(snapshot.hasData) return AppText(
                           text:movieTypeL[0].type
-                              +' | '+ widget.movie.date,
+                              +' | '+ movie.date,
                           textSize: 12.sp,
                         );
                         return AppText(
-                          text:widget.movie.date,
+                          text:movie.date,
                           textSize: 12.sp,
                         );
                       }),*/
                   AppText(
-                    text:widget.movie.date,
+                    text: movie.date,
                     textSize: 12.sp,
                   )
                 ],
@@ -164,7 +167,7 @@ class _DetailScreenState extends State<DetailScreen> {
       child: Container(
         height: (1 / 3).sh,
         width: 1.sw,
-        child: appImage(widget.movie.backdrop),
+        child: appImage(movie.backdrop),
       ),
     );
   }
@@ -190,7 +193,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 AppText(text: 'Top Rated', color: Colors.white.withOpacity(.7), fontWeight: FontWeight.bold),
                 Spacer(),
                 AppText(
-                  text: widget.movie.rate.toString(),
+                  text: movie.rate.toString(),
                   textSize: 40.sp,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
