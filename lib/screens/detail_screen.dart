@@ -5,15 +5,16 @@ import 'package:movie_app/bloc/artist/artist_bloc.dart';
 import 'package:movie_app/bloc/artist/artist_event.dart';
 import 'package:movie_app/bloc/video/video_bloc.dart';
 import 'package:movie_app/bloc/video/video_event.dart';
+import 'package:movie_app/model/movie_type.dart';
 import 'package:movie_app/screens/home_screen.dart';
-import 'package:movie_app/movie.dart';
+import 'package:movie_app/model/movie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/widgets/artistList.dart';
 import 'package:movie_app/widgets/video.dart';
 
 import '../widgets/app_sized_box.dart';
 import '../widgets/build_text.dart';
-import '../services/fetchMovie.dart';
+import '../services/api_services.dart';
 
 class DetailScreen extends StatelessWidget {
   final Movie movie;
@@ -25,6 +26,7 @@ class DetailScreen extends StatelessWidget {
   void initState() {
     movieType();
   }
+
 
   void movieType() async {
     final type = await fetchType(movie.id);

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import '../movie.dart';
-import 'fetchMovie.dart';
+import '../model/movie.dart';
+import 'api_services.dart';
+
 
 class ArticlesListViewModel extends ChangeNotifier {
   List<Movie> _movie = [];

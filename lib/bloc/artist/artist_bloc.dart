@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:movie_app/bloc/artist/artist_event.dart';
 import 'package:movie_app/bloc/artist/artist_state.dart';
-import 'package:movie_app/movie.dart';
-import 'package:movie_app/services/fetchMovie.dart';
+import 'package:movie_app/model/cast.dart';
+import 'package:movie_app/services/api_services.dart';
+
 
 class ArtistBloc extends Bloc<ArtistEvent, ArtistState>{
   ArtistBloc() : super(ArtistStateInit());

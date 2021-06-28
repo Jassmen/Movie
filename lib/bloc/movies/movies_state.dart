@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:movie_app/movie.dart';
+import 'package:movie_app/model/movie.dart';
 
 abstract class MoviesState extends Equatable {
   @override

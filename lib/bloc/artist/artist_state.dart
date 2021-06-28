@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_app/movie.dart';
+import 'package:movie_app/model/cast.dart';
+
 
 abstract class ArtistState extends Equatable{
   @override

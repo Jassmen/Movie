@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/bloc/video/video_event.dart';
 import 'package:movie_app/bloc/video/video_state.dart';
-import 'package:movie_app/services/fetchMovie.dart';
+import 'package:movie_app/services/api_services.dart';
+
 
 class VideoBloc extends Bloc<VideoEvent,VideoState>{
   VideoBloc() : super(VideoStateInitial());

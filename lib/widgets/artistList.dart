@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/bloc/artist/artist_bloc.dart';
-import 'package:movie_app/bloc/artist/artist_event.dart';
 import 'package:movie_app/bloc/artist/artist_state.dart';
-import 'package:movie_app/services/fetchMovie.dart';
+import 'package:movie_app/model/cast.dart';
 import 'package:movie_app/screens/home_screen.dart';
 import 'package:movie_app/widgets/build_text.dart';
-import '../movie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ArtistList extends StatelessWidget {

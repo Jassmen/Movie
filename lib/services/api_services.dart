@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:movie_app/model/cast.dart';
+import 'package:movie_app/model/movie_type.dart';
+import 'package:movie_app/model/search.dart';
 
-import '../movie.dart';
+import '../model/movie.dart';
 import 'package:http/http.dart' as http;
 
-final Dio _dio= Dio();
-const apiKey = '98b32984cf467bd24aba3f3bd5c7037c';
-const baseUrl = 'https://api.themoviedb.org/3';
+import 'api_const.dart';
 
-/////////Movie
 Future<List<Movie>> fetchMovie() async{
   try {
       final url = '$baseUrl/movie/now_playing?api_key=$apiKey';
-      final response = await _dio.get(url);
+      final response = await dio.get(url);
       var movies = response.data['results'] as List;
       List<Movie> movieList = movies.map((m) => Movie.fromJson(m)).toList();
       return movieList;
@@ -21,11 +21,9 @@ Future<List<Movie>> fetchMovie() async{
           'Exception accoured: $error with stacktrace: $stacktrace');
     }
  }
-
-/////////YouTube
 Future<String> fetchYouTubeId(int id) async {
   try {
-    final response = await _dio.get('$baseUrl/movie/$id/videos?api_key=$apiKey');
+    final response = await dio.get('$baseUrl/movie/$id/videos?api_key=$apiKey');
     var youtubeId = response.data['results'][0]['key'];
     return youtubeId;
   } catch (error, stacktrace) {
@@ -34,10 +32,9 @@ Future<String> fetchYouTubeId(int id) async {
   }
 }
 
-/////////Cast
 Future<List<CastData>> fetchCastDATA(int id) async{
   try{
-    final response = await _dio.get('$baseUrl/movie/$id/credits?api_key=$apiKey');
+    final response = await dio.get('$baseUrl/movie/$id/credits?api_key=$apiKey');
     var castListUrl=  response.data['cast'] as List;
     List<CastData> castList = castListUrl.map((m) => CastData.fromJson(m)).toList();
 
@@ -48,11 +45,10 @@ Future<List<CastData>> fetchCastDATA(int id) async{
   }
 }
 
-/////////MovieType
 Future<List<MovieType>> fetchType(int id) async{
   try{
     final url= '$baseUrl/movie/$id?api_key=$apiKey';
-    final response = await _dio.get(url);
+    final response = await dio.get(url);
     var type = response.data['genres'] as List;
     List<MovieType> movieType = type.map((e) => MovieType.fromJson(e)).toList();
     return movieType;
@@ -60,3 +56,18 @@ Future<List<MovieType>> fetchType(int id) async{
     throw Exception( 'Exception accoured: $error with stacktrace: $stacktrace');
   }
 }
+
+
+Future<List<Search>> fetchSearch(String movieName) async{
+  try{
+    final response = await dio.get('$baseUrl/search/movie?api_key=$apiKey&language=en-US&query=$movieName');
+    var data = response.data['results'] as List;
+    print('Search-------------- $data');
+    List<Search> searchList = data.map((e) => Search.fromJson(e)).toList();
+    return searchList;
+  }catch(error,stacktrace){
+    throw Exception('Exception accoured: $error with stacktrace: $stacktrace');
+  }
+}
+
+

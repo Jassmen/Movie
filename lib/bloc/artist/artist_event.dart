@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../movie.dart';
+
 
 abstract class ArtistEvent extends Equatable{
   @override

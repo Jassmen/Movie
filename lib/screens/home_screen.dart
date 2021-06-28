@@ -8,11 +8,14 @@ import 'package:movie_app/bloc/movies/movies_bloc.dart';
 import 'package:movie_app/bloc/movies/movies_event.dart';
 import 'package:movie_app/bloc/movies/movies_state.dart';
 import 'package:movie_app/screens/detail_screen.dart';
-import 'package:movie_app/movie.dart';
+import 'package:movie_app/model/movie.dart';
+import 'package:movie_app/screens/search_screen.dart';
+import 'package:movie_app/screens/search_screen1.dart';
+import 'package:movie_app/services/api_services.dart';
 
 import '../widgets/app_sized_box.dart';
 import '../widgets/build_text.dart';
-import '../movie.dart';
+import '../model/movie.dart';
 import '../widgets/movie_card.dart';
 
 class Home extends StatefulWidget {
@@ -173,10 +176,10 @@ Widget buildToolbar(String text, IconData icon, BuildContext context, {String da
           Spacer(),
           IconButton(
               onPressed: () {
-                icon == Icons.search;
-                /*? Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SearchScreen()))
-                    : null;*/
+                icon == Icons.search
+                ? Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SearchScreen1()))
+                    : null;
               },
               icon: Icon(icon)),
           AppSizedBox(width: 20.w),

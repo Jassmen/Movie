@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/bloc/movies/movies_event.dart';
 import 'package:movie_app/bloc/movies/movies_state.dart';
-import 'package:movie_app/movie.dart';
-import 'package:movie_app/services/fetchMovie.dart';
+import 'package:movie_app/model/movie.dart';
+import 'package:movie_app/services/api_services.dart';
+
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   MoviesBloc() : super(MoviesStateInitial());
