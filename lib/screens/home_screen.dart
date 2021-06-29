@@ -12,6 +12,8 @@ import 'package:movie_app/model/movie.dart';
 import 'package:movie_app/screens/search_screen.dart';
 import 'package:movie_app/screens/search_screen1.dart';
 import 'package:movie_app/services/api_services.dart';
+import 'package:movie_app/widgets/app_icon_button.dart';
+import 'package:movie_app/widgets/app_image.dart';
 
 import '../widgets/app_sized_box.dart';
 import '../widgets/build_text.dart';
@@ -22,6 +24,8 @@ class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
+
+String selectedItem = 'now_playing';
 
 class _HomeState extends State<Home> {
   final PageController pageController = PageController(viewportFraction: .8, initialPage: 0);
@@ -34,13 +38,15 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     pageController.addListener(fun);
+    MoviesBloc()..add(MoviesEventFetch(selectedItem: selectedItem));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print('selectedItem----------$selectedItem');
     return BlocProvider(
-      create: (_) => MoviesBloc()..add(MoviesEventFetch()),
+      create: (_) => MoviesBloc()..add(MoviesEventFetch(selectedItem: selectedItem)),
       child: _buildBody(),
     );
   }
@@ -145,46 +151,54 @@ Center buildProgressWidget() {
   );
 }
 
-Widget appImage(String img) {
+Widget buildToolbar(String text, IconData icon, BuildContext context,) {
   return Container(
-    height: 1.sh,
-    width: 1.sw,
-    child: CachedNetworkImage(
-      key: UniqueKey(),
-      fit: BoxFit.cover,
-      imageUrl: 'https://image.tmdb.org/t/p/original${img}',
-      placeholder: (context, url) => Container(color: Colors.black12),
-      errorWidget: (context, url, error) => Icon(Icons.error),
+    margin: EdgeInsets.only(bottom: 10.w),
+    child: Row(
+      children: [
+        AppSizedBox(width: 40.w),
+        AppText(text: text, color: Colors.white, textSize: 25.sp, fontWeight: FontWeight.bold),
+        PopupMenuButton<int>(
+          icon:Icon(Icons.arrow_drop_down_rounded) ,
+            color:Colors.black38 ,
+            onSelected:(item)=> _onSelect(context: context,item: item),
+            itemBuilder: (context)=>[
+              appPopupMenuItem(v:0,text: 'Popular'),
+              appPopupMenuItem(v: 1,text: 'Top Rated'),
+              appPopupMenuItem(v:2,text: 'Now Playing'),
+              appPopupMenuItem(v:3,text: 'Upcoming'),
+            ]),
+        Spacer(),
+        AppIconButton(
+            press: ()=> Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SearchScreen1())),
+            icon: Icons.search),
+        AppSizedBox(width: 20.w),
+      ],
     ),
   );
 }
 
-Widget buildToolbar(String text, IconData icon, BuildContext context, {String data = ''}) {
-  return Container(
-    margin: EdgeInsets.only(bottom: 10.w),
-    child: InkWell(
-      onTap: () {},
-      child: Row(
-        children: [
-          AppSizedBox(width: 40.w),
-          Expanded(flex: 9, child: AppText(text: text, color: Colors.white, textSize: 25.sp, fontWeight: FontWeight.bold)),
-          /*data == '' ? Icon(
-            Icons.arrow_drop_down_rounded,
-            color: Colors.white,
-            size: 30,
-          ) : SizedBox(),*/
-          Spacer(),
-          IconButton(
-              onPressed: () {
-                icon == Icons.search
-                ? Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SearchScreen1()))
-                    : null;
-              },
-              icon: Icon(icon)),
-          AppSizedBox(width: 20.w),
-        ],
-      ),
-    ),
-  );
+_onSelect({required BuildContext context, required int item}) {
+  switch(item){
+    case 0:
+      selectedItem = 'popular';
+      print('selectedItem----------$selectedItem');
+      break;
+    case 1:
+      selectedItem = 'top_rated';
+
+      break;
+    case 2:
+      selectedItem = 'now_playing';
+      break;
+    case 3:
+      selectedItem = 'upcoming';
+      break;
+
+  }
+
 }
+
+PopupMenuItem<int> appPopupMenuItem({required int v,required String text}) =>
+    PopupMenuItem(value:v,child: AppText(text: text));

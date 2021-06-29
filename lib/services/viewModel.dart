@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/cupertino.dart';
 
 import '../model/movie.dart';
@@ -16,4 +17,4 @@ class ArticlesListViewModel extends ChangeNotifier {
 
   List<Movie> get movie => _movie;
 
-}
+}*/

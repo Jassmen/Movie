@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../screens/home_screen.dart';
 import '../model/movie.dart';
+import 'app_image.dart';
 
 class MovieCard extends StatelessWidget {
   Movie movie;

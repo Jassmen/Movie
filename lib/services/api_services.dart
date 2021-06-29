@@ -9,9 +9,9 @@ import 'package:http/http.dart' as http;
 
 import 'api_const.dart';
 
-Future<List<Movie>> fetchMovie() async{
+Future<List<Movie>> fetchMovie(String selectedItem) async{
   try {
-      final url = '$baseUrl/movie/now_playing?api_key=$apiKey';
+      final url = '$baseUrl/movie/$selectedItem?api_key=$apiKey';
       final response = await dio.get(url);
       var movies = response.data['results'] as List;
       List<Movie> movieList = movies.map((m) => Movie.fromJson(m)).toList();

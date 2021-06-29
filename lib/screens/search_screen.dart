@@ -8,6 +8,7 @@ import 'package:movie_app/bloc/search/search_event.dart';
 import 'package:movie_app/bloc/search/search_state.dart';
 import 'package:movie_app/model/search.dart';
 import 'package:movie_app/screens/search_screen1.dart';
+import 'package:movie_app/widgets/app_image.dart';
 import 'package:movie_app/widgets/app_sized_box.dart';
 import 'package:movie_app/widgets/build_text.dart';
 
@@ -16,10 +17,12 @@ import 'home_screen.dart';
 
 
 const Color iconColor = Color(0xFFD9D9D9);
+ Color backgroundColor = iconColor.withOpacity(.3);
 
 class SearchScreen extends StatelessWidget {
   final String nameOfMovie;
   SearchScreen({required this.nameOfMovie});
+  final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class SearchScreen extends StatelessWidget {
       create: (_) =>  SearchBloc()..add(SearchEventFetch(movieName:'${nameOfMovie.toString()}')),
       child: BlocBuilder<SearchBloc, SearchState>(
           builder: (context, state) {
-            if (state is SearchStateSuccess) return _buildBody(state.list,context);
+            if (state is SearchStateSuccess) return _buildBody(state.list,context, searchController);
             if (state is SearchStateFailed) {
              return SearchScreen1(notFound: true,);
           //return AppText(text: state.error);
@@ -39,15 +42,15 @@ class SearchScreen extends StatelessWidget {
       ),
     );
   }
-    Scaffold _buildBody(List<Search> list,BuildContext context) {
+    Scaffold _buildBody(List<Search> list,BuildContext context,TextEditingController searchController) {
       return Scaffold(
-        backgroundColor: iconColor.withOpacity(.3),
+        backgroundColor:backgroundColor,
         body: Padding(
           padding: EdgeInsets.only(right: 10.w, left: 10.w),
           child: Column(
             children: [
               AppSizedBox(height: 70.h),
-             buildAppBar(context),
+             buildAppBar(context,searchController),
               searchedMovies(list)
             ],
           ),
@@ -58,7 +61,7 @@ class SearchScreen extends StatelessWidget {
     Expanded searchedMovies(List<Search> list) {
       return Expanded(
           child: ListView.builder(
-              itemCount: list.length, ///////////
+              itemCount: list.length >5 ? 5 :list.length,
               itemBuilder: (context, index) {
                 return listItem(list[index]);
               }));
@@ -88,10 +91,13 @@ class SearchScreen extends StatelessWidget {
                       width: .5.sw,
                       child: Row(
                         children: [
-                          AppText(
-                            text: index.title, ///////////////
-                            fontWeight: FontWeight.bold,
-                            textSize: 12,
+                          Expanded(
+                            flex: 3,
+                            child: AppText(
+                              text: index.title, ///////////////
+                              fontWeight: FontWeight.bold,
+                              textSize: 12,
+                            ),
                           ),
                           Spacer(),
                           AppText(

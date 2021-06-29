@@ -21,7 +21,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       // return loading
       yield MoviesStateLoading();
 
-      List<Movie> movies = await fetchMovie();
+      List<Movie> movies = await fetchMovie(event.selectedItem);
       // String  movies = await fetchYouTubeId(event.id);
       yield MoviesStateSuccess(list: movies);
     } catch (e) {

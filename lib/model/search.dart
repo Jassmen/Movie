@@ -29,5 +29,5 @@ class Search extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, title, overview,backdropPath,rating];
+  List<Object?> get props => [id, title, overview,backdropPath,rating,date];
 }

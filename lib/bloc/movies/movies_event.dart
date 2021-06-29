@@ -6,10 +6,10 @@ abstract class MoviesEvent extends Equatable {
 }
 
 class MoviesEventFetch extends MoviesEvent {
-  // final int id;
+  final String selectedItem;
 
-  // MoviesEventFetch({required this.id});
+   MoviesEventFetch({required this.selectedItem});
 
-  // @override
-  // List<Object> get props => [id];
+   @override
+  List<Object> get props => [selectedItem];
 }

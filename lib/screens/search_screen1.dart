@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/screens/search_screen.dart';
+import 'package:movie_app/widgets/app_icon_button.dart';
 import 'package:movie_app/widgets/app_sized_box.dart';
 import 'package:movie_app/widgets/build_text.dart';
 
 String moveName = 'play';
 
-void getMovieName(String name) {
+void getMovieName(String name,BuildContext context) {
   moveName = name;
   print('movieName--------------------------------$moveName');
+  Navigator.pop(context);
+  Navigator.push(context, MaterialPageRoute(builder:
+      (context)=> SearchScreen(nameOfMovie: '$moveName',)));
 }
 
 class SearchScreen1 extends StatelessWidget {
   bool notFound ;
   SearchScreen1({this.notFound = false});
+  final searchController = TextEditingController();
+
 
     @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: iconColor.withOpacity(.3),
+      backgroundColor: backgroundColor,
       body:buildBody(context)
     );
   }
@@ -30,7 +36,7 @@ class SearchScreen1 extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppSizedBox(height: 70.h),
-          buildAppBar(context),
+          buildAppBar(context,searchController),
           notFound ? AppSizedBox(height: .3.sh): SizedBox(),
           notFound ? Center(
             child: AppText(text: 'Not Found',),
@@ -43,7 +49,7 @@ class SearchScreen1 extends StatelessWidget {
 
 
 }
-Container buildAppBar(BuildContext context) {
+Container buildAppBar(BuildContext context, TextEditingController searchController) {
   return Container(
     width: 1.sw,
     decoration: BoxDecoration(
@@ -51,36 +57,32 @@ Container buildAppBar(BuildContext context) {
       color: Color(0xFF191919).withOpacity(.5),
     ),
     child: TextField(
+      controller: searchController,
       cursorColor: Colors.white,
-      style: TextStyle(
-        color: Colors.white,
-      ),
+      style: TextStyle(color: Colors.white),
+      textInputAction:TextInputAction.done,
       decoration: InputDecoration(
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           hintText: 'search...',
           hintStyle: TextStyle(
-            color: Colors.white.withOpacity(.5),
-          ),
-          prefixIcon: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder:
-                    (context)=> SearchScreen(nameOfMovie: '$moveName',)));
-              },
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              )),
-          suffixIcon: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.mic,
-                color: iconColor,
-              ))),
-      onChanged: (value) => getMovieName(value.toString()),
+            color: Colors.white.withOpacity(.5)),
+          prefixIcon: AppIconButton(
+            icon: Icons.search,
+            press:  () {
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder:
+                (context)=> SearchScreen(nameOfMovie: '$moveName',)));
+          },),
+          suffixIcon:searchController.text.isEmpty ? Container(width: 0):
+          AppIconButton(icon:Icons.close,
+                  press: () => searchController.clear()),
+      ),
+      //onChanged: (value) => getMovieName(value.toString()),
+      onSubmitted:(value) => getMovieName(value.toString(),context) ,
 
 
     ),
   );
 }
+

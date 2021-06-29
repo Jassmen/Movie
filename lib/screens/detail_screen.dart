@@ -9,7 +9,9 @@ import 'package:movie_app/model/movie_type.dart';
 import 'package:movie_app/screens/home_screen.dart';
 import 'package:movie_app/model/movie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/widgets/app_image.dart';
 import 'package:movie_app/widgets/artistList.dart';
+import 'package:movie_app/widgets/detail_app_bar.dart';
 import 'package:movie_app/widgets/video.dart';
 
 import '../widgets/app_sized_box.dart';
@@ -67,7 +69,8 @@ class DetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildToolbar(movie.title, Icons.bookmark, context, data: movie.date),
+              //buildToolbar(movie.title, Icons.bookmark, context, data: movie.date),
+              detailToolbar(text: movie.title),
               MovieVideo(id: movie.id),
               overView('Overview'),
               overView(movie.overview, space: true, size: 12),
