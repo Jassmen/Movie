@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/screens/s1.dart';
+
 import 'package:movie_app/screens/search_screen.dart';
 import 'package:movie_app/widgets/app_icon_button.dart';
 import 'package:movie_app/widgets/app_sized_box.dart';
@@ -11,8 +13,8 @@ void getMovieName(String name,BuildContext context) {
   moveName = name;
   print('movieName--------------------------------$moveName');
   Navigator.pop(context);
-  Navigator.push(context, MaterialPageRoute(builder:
-      (context)=> SearchScreen(nameOfMovie: '$moveName',)));
+/*  Navigator.push(context, MaterialPageRoute(builder:
+      (context)=> SearchScreen(nameOfMovie: '$moveName',)));*/
 }
 
 class SearchScreen1 extends StatelessWidget {
@@ -71,8 +73,8 @@ Container buildAppBar(BuildContext context, TextEditingController searchControll
             icon: Icons.search,
             press:  () {
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder:
-                (context)=> SearchScreen(nameOfMovie: '$moveName',)));
+            /*Navigator.push(context, MaterialPageRoute(builder:
+                (context)=> SearchScreen(nameOfMovie: '$moveName',)));*/
           },),
           suffixIcon:searchController.text.isEmpty ? Container(width: 0):
           AppIconButton(icon:Icons.close,

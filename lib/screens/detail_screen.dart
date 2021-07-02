@@ -6,7 +6,7 @@ import 'package:movie_app/bloc/artist/artist_event.dart';
 import 'package:movie_app/bloc/video/video_bloc.dart';
 import 'package:movie_app/bloc/video/video_event.dart';
 import 'package:movie_app/model/movie_type.dart';
-import 'package:movie_app/screens/home_screen.dart';
+
 import 'package:movie_app/model/movie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/widgets/app_image.dart';

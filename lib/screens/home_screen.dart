@@ -3,15 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_app/bloc/movies/movies_bloc.dart';
 import 'package:movie_app/bloc/movies/movies_event.dart';
 import 'package:movie_app/bloc/movies/movies_state.dart';
 import 'package:movie_app/screens/detail_screen.dart';
 import 'package:movie_app/model/movie.dart';
+import 'package:movie_app/screens/s2.dart';
 import 'package:movie_app/screens/search_screen.dart';
-import 'package:movie_app/screens/search_screen1.dart';
-import 'package:movie_app/services/api_services.dart';
 import 'package:movie_app/widgets/app_icon_button.dart';
 import 'package:movie_app/widgets/app_image.dart';
 
@@ -161,7 +159,6 @@ Widget buildToolbar(String text, IconData icon, BuildContext context,) {
         PopupMenuButton<int>(
           icon:Icon(Icons.arrow_drop_down_rounded) ,
             color:Colors.black38 ,
-            onSelected:(item)=> _onSelect(context: context,item: item),
             itemBuilder: (context)=>[
               appPopupMenuItem(v:0,text: 'Popular'),
               appPopupMenuItem(v: 1,text: 'Top Rated'),
@@ -171,7 +168,7 @@ Widget buildToolbar(String text, IconData icon, BuildContext context,) {
         Spacer(),
         AppIconButton(
             press: ()=> Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SearchScreen1())),
+                      MaterialPageRoute(builder: (context) => SearchScreen())),
             icon: Icons.search),
         AppSizedBox(width: 20.w),
       ],
@@ -179,26 +176,7 @@ Widget buildToolbar(String text, IconData icon, BuildContext context,) {
   );
 }
 
-_onSelect({required BuildContext context, required int item}) {
-  switch(item){
-    case 0:
-      selectedItem = 'popular';
-      print('selectedItem----------$selectedItem');
-      break;
-    case 1:
-      selectedItem = 'top_rated';
 
-      break;
-    case 2:
-      selectedItem = 'now_playing';
-      break;
-    case 3:
-      selectedItem = 'upcoming';
-      break;
-
-  }
-
-}
 
 PopupMenuItem<int> appPopupMenuItem({required int v,required String text}) =>
     PopupMenuItem(value:v,child: AppText(text: text));

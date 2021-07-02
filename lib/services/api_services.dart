@@ -60,7 +60,8 @@ Future<List<MovieType>> fetchType(int id) async{
 
 Future<List<Search>> fetchSearch(String movieName) async{
   try{
-    final response = await dio.get('$baseUrl/search/movie?api_key=$apiKey&language=en-US&query=$movieName');
+    final response = await dio.get(
+        '$baseUrl/search/movie?api_key=$apiKey&language=en-US&query=$movieName');
     var data = response.data['results'] as List;
     print('Search-------------- $data');
     List<Search> searchList = data.map((e) => Search.fromJson(e)).toList();
