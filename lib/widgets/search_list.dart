@@ -7,13 +7,14 @@ import 'app_image.dart';
 import 'app_sized_box.dart';
 import 'build_text.dart';
 
-Expanded searchedList(List<Search> list) {
-  return Expanded(
-      child: ListView.builder(
-          itemCount: list.length >5 ? 5 :list.length,
-          itemBuilder: (context, index) {
-            return listItem(list[index]);
-          }));
+Widget searchedList(List<Search> list) {
+  return ListView.builder(
+      itemCount: list.length > 5 ? 5 : list.length,
+      // shrinkWrap: true,
+      // physics: ClampingScrollPhysics(),
+      itemBuilder: (context, index) {
+        return listItem(list[index]);
+      });
 }
 
 Container listItem(Search index) {
@@ -28,7 +29,7 @@ Container listItem(Search index) {
             margin: EdgeInsets.only(
               left: 10.w,
             ),
-            child: appImage(index.backdropPath), ///////
+            child: index.backdropPath != null ? appImage(index.backdropPath!) : Container(), ///////
           ),
           AppSizedBox(width: 10.w),
           Expanded(
@@ -43,14 +44,14 @@ Container listItem(Search index) {
                       Expanded(
                         flex: 3,
                         child: AppText(
-                          text: index.title, ///////////////
+                          text: index.title ?? '', ///////////////
                           fontWeight: FontWeight.bold,
                           textSize: 12,
                         ),
                       ),
                       Spacer(),
                       AppText(
-                        text: index.rating, ////////////
+                        text: index.rating ?? '', ////////////
                         fontWeight: FontWeight.bold,
                         textSize: 12,
                       ),
@@ -60,17 +61,11 @@ Container listItem(Search index) {
                 AppSizedBox(
                   height: 10.h,
                 ),
-                AppText(
-                    text: index.date,
-                    color: Colors.white.withOpacity(.7),
-                    textSize: 10),
+                AppText(text: index.date ?? '', color: Colors.white.withOpacity(.7), textSize: 10),
                 AppSizedBox(
                   height: 20.h,
                 ),
-                AppText(
-                    text: index.overview,
-                    color: Colors.white.withOpacity(.7),
-                    textSize: 10),
+                AppText(text: index.overview ?? '', color: Colors.white.withOpacity(.7), textSize: 10),
               ],
             ),
           ),

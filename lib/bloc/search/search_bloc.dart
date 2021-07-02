@@ -4,27 +4,24 @@ import 'package:movie_app/bloc/search/search_state.dart';
 import 'package:movie_app/model/search.dart';
 import 'package:movie_app/services/api_services.dart';
 
-class SearchBloc extends Bloc<SearchEvent,SearchState>{
+class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc() : super(SearchStateInit());
 
   @override
   Stream<SearchState> mapEventToState(SearchEvent event) async* {
-    if(event is SearchEventFetch){
-     yield*  _fetchSearchList(event);
+    if (event is SearchEventFetch) {
+      yield* _fetchSearchList(event);
     }
-
   }
-  Stream<SearchState> _fetchSearchList(SearchEventFetch event) async*{
-    try{
+
+  Stream<SearchState> _fetchSearchList(SearchEventFetch event) async* {
+    try {
       yield SearchStateLoading();
 
       List<Search> list = await fetchSearch(event.movieName);
       yield SearchStateSuccess(list: list);
-    }catch(e){
+    } catch (e) {
       yield SearchStateFailed(error: e.toString());
     }
-
   }
-
-
 }
