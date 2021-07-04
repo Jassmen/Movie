@@ -8,7 +8,7 @@ abstract class ArtistEvent extends Equatable{
 }
 
 class ArtistEventFetch extends ArtistEvent{
-  final int id;
+  final String? id;
 
   ArtistEventFetch({required this.id});
 

@@ -16,7 +16,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   }
 
   Stream<MoviesState> _fetchMovies(MoviesEventFetch event) async* {
-    // Fetcht movies and return States
     try {
       // return loading
       yield MoviesStateLoading();

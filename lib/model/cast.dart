@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 class CastData extends Equatable{
-  final String name;
-  final String profilePath;
-  final String character;
+  final String? name;
+  final String? profilePath;
+  final String? character;
   CastData({
     required this.name,
     required this.profilePath,

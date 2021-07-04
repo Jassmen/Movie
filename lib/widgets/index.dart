@@ -5,3 +5,4 @@ export 'artistList.dart';
 export 'detail_app_bar.dart';
 export 'movie_card.dart';
 export 'video.dart';
+export 'home_screen_app_bar.dart';

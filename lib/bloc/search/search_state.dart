@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_app/model/search.dart';
+import 'package:movie_app/model/movie.dart';
+
 
 abstract class SearchState extends Equatable{
   @override
@@ -12,7 +13,7 @@ class SearchStateInit extends SearchState{}
 class SearchStateLoading extends SearchState{}
 
 class SearchStateSuccess extends SearchState{
-  final List<Search> list;
+  final List<Movie> list;
 
   SearchStateSuccess({required this.list});
 

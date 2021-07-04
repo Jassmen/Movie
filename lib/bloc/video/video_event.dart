@@ -6,7 +6,7 @@ abstract class VideoEvent extends Equatable{
 }
 
 class VideoEventFetch extends VideoEvent{
-  final int id;
+  final String id;
   VideoEventFetch({required this.id});
 
   @override

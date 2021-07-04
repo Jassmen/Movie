@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../screens/home_screen.dart';
 import '../model/movie.dart';
 import 'app_image.dart';
 
@@ -16,11 +15,15 @@ class MovieCard extends StatelessWidget {
     return buildMovieImage(
       cardWidth,
       cardHeight,
-      movie.poster,
+      movie.poster!,
     );
   }
 
   Widget buildMovieImage(double cardWidth, double cardHeight, String img) {
-    return Container(margin: EdgeInsets.symmetric(horizontal: 20.w), width: cardWidth, height: cardHeight, child: appImage(img));
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.w),
+        width: cardWidth,
+        height: cardHeight,
+        child: appImage(img));
   }
 }

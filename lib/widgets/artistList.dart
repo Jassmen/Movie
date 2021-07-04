@@ -11,7 +11,7 @@ import 'app_image.dart';
 
 class ArtistList extends StatelessWidget {
   ArtistList({required this.id}) : super();
-  int id;
+  String? id;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +22,9 @@ class ArtistList extends StatelessWidget {
     return BlocBuilder<ArtistBloc, ArtistState>(builder: (context, state) {
       if (state is ArtistStateSuccess) return _artistList(state.list);
       if (state is ArtistStateFailed)
-        return AppText(
-          text: 'error',
-        );
+        return Center(child:AppText(
+          text: 'Error',
+        ),);
       return buildProgressWidget();
     });
   }
@@ -37,7 +37,7 @@ class ArtistList extends StatelessWidget {
         left: 20.w,
         right: 20.w,
       ),
-      child: ListView.builder(
+      child:ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: castList.length > 10 ? 10 : castList.length,
           itemBuilder: (context, int index) {
@@ -46,8 +46,9 @@ class ArtistList extends StatelessWidget {
                 height: 60.w,
                 margin: EdgeInsets.symmetric(horizontal: 4.w),
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(50.w), border: Border.all(color: Colors.white)),
-                child: appImage(castList[index].profilePath));
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(50.w),
+                    border: Border.all(color: Colors.white)),
+                child: appImage(castList[index].profilePath!));
           }),
     );
   }

@@ -25,6 +25,7 @@ class AppText extends StatelessWidget {
             fontWeight: fontWeight
         ),
       overflow: TextOverflow.fade,
+      maxLines: 6,
 
     );
   }

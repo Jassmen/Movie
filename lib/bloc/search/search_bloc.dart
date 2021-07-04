@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:movie_app/bloc/search/search_event.dart';
 import 'package:movie_app/bloc/search/search_state.dart';
-import 'package:movie_app/model/search.dart';
+import 'package:movie_app/model/movie.dart';
 import 'package:movie_app/services/api_services.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
@@ -18,7 +18,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     try {
       yield SearchStateLoading();
 
-      List<Search> list = await fetchSearch(event.movieName);
+      List<Movie> list = await fetchSearch(event.movieName);
       yield SearchStateSuccess(list: list);
     } catch (e) {
       yield SearchStateFailed(error: e.toString());

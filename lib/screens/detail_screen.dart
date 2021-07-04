@@ -24,37 +24,32 @@ class DetailScreen extends StatelessWidget {
 
   List<MovieType> movieTypeL = [];
 
-  @override
+/*  @override
   void initState() {
     movieType();
-  }
+  }*/
 
 
-  void movieType() async {
+ /* void movieType() async {
     final type = await fetchType(movie.id);
     print('type:--------------->$type');
-    // setState(() {
-    //   movieTypeL = type;
-    // });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<VideoBloc>(create: (_) => VideoBloc()..add(VideoEventFetch(id: movie.id))),
-        BlocProvider<ArtistBloc>(create: (_) => ArtistBloc()..add(ArtistEventFetch(id: movie.id))),
+        BlocProvider<VideoBloc>(create: (_) => VideoBloc()..add(VideoEventFetch(id: movie.id!))),
+        BlocProvider<ArtistBloc>(create: (_) => ArtistBloc()..add(ArtistEventFetch(id: movie.id!))),
       ],
       child: Scaffold(
           body: Stack(
-        children: [
-          appImage(movie.poster),
-          moviePoster(),
-          detailsBody(
-            context,
-          ),
-        ],
-      )),
+            children: [
+              appImage(movie.poster!),
+              moviePoster(),
+              detailsBody(context),
+            ],
+          )),
     );
   }
 
@@ -69,13 +64,12 @@ class DetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //buildToolbar(movie.title, Icons.bookmark, context, data: movie.date),
-              detailToolbar(text: movie.title),
-              MovieVideo(id: movie.id),
+              detailToolbar(text: movie.title ?? ''),
+              MovieVideo(id: movie.id!),
               overView('Overview'),
-              overView(movie.overview, space: true, size: 12),
+              overView(movie.overview ?? '', space: true, size: 12),
               overView('Cast', space: true),
-              ArtistList(id: movie.id),
+              ArtistList(id: movie.id!),
               AppSizedBox(height: 10.h),
             ],
           ),
@@ -107,7 +101,7 @@ class DetailScreen extends StatelessWidget {
                 margin: EdgeInsets.only(
                   left: 20.w,
                 ),
-                child: appImage(movie.poster)),
+                child: appImage(movie.poster!)),
           ),
           AppSizedBox(width: 10.w),
           Expanded(
@@ -121,22 +115,22 @@ class DetailScreen extends StatelessWidget {
                   AppText(text: 'Featured Crew', textSize: 12),
                   AppSizedBox(height: 10.h),
                   AppText(
-                    text: movie.title, ///////////////////
+                    text: movie.title ?? '',
                     fontWeight: FontWeight.bold,
                     textSize: 15.sp,
                   ),
                   AppText(
-                    text: movie.title, //////////////////
+                    text: movie.title ?? '',
                     textSize: 10.sp,
                   ),
                   AppSizedBox(height: 10.h),
                   AppText(
-                    text: movie.title, //////////////////
+                    text: movie.title ?? '',
                     fontWeight: FontWeight.bold,
                     textSize: 15.sp,
                   ),
                   AppText(
-                    text: movie.title, //////////////////
+                    text: movie.title ?? '',
                     textSize: 10.sp,
                   ),
                   AppSizedBox(height: 10.h),
@@ -154,7 +148,7 @@ class DetailScreen extends StatelessWidget {
                         );
                       }),*/
                   AppText(
-                    text: movie.date,
+                    text: movie.date ?? '',
                     textSize: 12.sp,
                   )
                 ],
@@ -172,7 +166,7 @@ class DetailScreen extends StatelessWidget {
       child: Container(
         height: (1 / 3).sh,
         width: 1.sw,
-        child: appImage(movie.backdrop),
+        child: appImage(movie.backdropPath!),
       ),
     );
   }
@@ -181,7 +175,7 @@ class DetailScreen extends StatelessWidget {
     return BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
         child: Container(
-          height: 70.h, // TODO: use screen util
+          height: 70.h,
           child: InkWell(
             onTap: () {
               Navigator.pop(context);
@@ -198,7 +192,7 @@ class DetailScreen extends StatelessWidget {
                 AppText(text: 'Top Rated', color: Colors.white.withOpacity(.7), fontWeight: FontWeight.bold),
                 Spacer(),
                 AppText(
-                  text: movie.rate.toString(),
+                  text: movie.rating.toString(),
                   textSize: 40.sp,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

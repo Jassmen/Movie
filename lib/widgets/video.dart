@@ -10,7 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 class MovieVideo extends StatelessWidget {
   MovieVideo({required this.id});
   String trailingId = '';
-  final int id;
+  final String? id;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +33,7 @@ class MovieVideo extends StatelessWidget {
           return appVideoContainer();
         }
         if (state is VideoStateFailed) {
-          return Center(
-              child: AppText(
-            text: 'Error',
-          ));
+          return appVideoContainer(found: false);
         }
         return videoProgressContainer();
       },
@@ -44,20 +41,23 @@ class MovieVideo extends StatelessWidget {
   }
 
   Container videoProgressContainer() {
-    return Container(height: .25.sh, width: 1.sw, color: Colors.black, margin: EdgeInsets.only(right: 20.w, left: 20.w), child: buildProgressWidget());
+    return Container(height: .25.sh,
+        width: 1.sw, color: Colors.black,
+        margin: EdgeInsets.only(right: 20.w, left: 20.w),
+        child: buildProgressWidget());
   }
 
-  Container appVideoContainer() {
+  Container appVideoContainer({bool found = true}) {
     return Container(
       height: .25.sh,
       width: 1.sw,
       color: Colors.black,
       margin: EdgeInsets.only(right: 20.w, left: 20.w),
       child: Center(
-        child: IconButton(
+        child:found? IconButton(
           onPressed: launchURL,
           icon: Icon(Icons.play_circle_outline_outlined, size: 30),
-        ),
+        ):Icon(Icons.error, size: 30),
       ),
     );
   }

@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:movie_app/model/cast.dart';
 import 'package:movie_app/model/movie_type.dart';
-import 'package:movie_app/model/search.dart';
-
 import '../model/movie.dart';
-import 'package:http/http.dart' as http;
 
 import 'api_const.dart';
 
@@ -21,7 +16,7 @@ Future<List<Movie>> fetchMovie(String selectedItem) async {
   }
 }
 
-Future<String> fetchYouTubeId(int id) async {
+Future<String> fetchYouTubeId(String id) async {
   try {
     final response = await dio.get('$baseUrl/movie/$id/videos?api_key=$apiKey');
     var youtubeId = response.data['results'][0]['key'];
@@ -31,7 +26,7 @@ Future<String> fetchYouTubeId(int id) async {
   }
 }
 
-Future<List<CastData>> fetchCastDATA(int id) async {
+Future<List<CastData>> fetchCastDATA(String? id) async {
   try {
     final response = await dio.get('$baseUrl/movie/$id/credits?api_key=$apiKey');
     var castListUrl = response.data['cast'] as List;
@@ -55,10 +50,9 @@ Future<List<MovieType>> fetchType(int id) async {
   }
 }
 
-Future<List<Search>> fetchSearch(String movieName) async {
+Future<List<Movie>> fetchSearch(String movieName) async {
   final response = await dio.get('$baseUrl/search/movie?api_key=$apiKey&language=en-US&query=$movieName');
   var data = response.data['results'] as List;
-  print('Search-------------- $data');
-  List<Search> searchList = data.map((e) => Search.fromJson(e)).toList();
+  List<Movie> searchList = data.map((e) => Movie.fromJson(e)).toList();
   return searchList;
 }
