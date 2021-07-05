@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/widgets/app_icon_button.dart';
-import 'package:movie_app/widgets/app_sized_box.dart';
-import 'package:movie_app/widgets/build_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'index.dart';
 
 Widget detailToolbar({required String text}) {
   return Container(

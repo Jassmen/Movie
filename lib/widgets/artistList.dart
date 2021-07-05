@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/bloc/artist/artist_bloc.dart';
-import 'package:movie_app/bloc/artist/artist_state.dart';
+import 'package:movie_app/bloc/artist/index.dart';
 import 'package:movie_app/model/cast.dart';
 import 'package:movie_app/screens/home_screen.dart';
-import 'package:movie_app/widgets/build_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'app_image.dart';
+import 'index.dart';
 
 class ArtistList extends StatelessWidget {
   ArtistList({required this.id}) : super();

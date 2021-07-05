@@ -20,6 +20,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
       List<Movie> list = await fetchSearch(event.movieName);
       yield SearchStateSuccess(list: list);
+
     } catch (e) {
       yield SearchStateFailed(error: e.toString());
     }

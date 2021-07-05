@@ -1,39 +1,16 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/bloc/artist/artist_bloc.dart';
-import 'package:movie_app/bloc/artist/artist_event.dart';
-import 'package:movie_app/bloc/video/video_bloc.dart';
-import 'package:movie_app/bloc/video/video_event.dart';
-import 'package:movie_app/model/movie_type.dart';
-
+import 'package:movie_app/bloc/artist/index.dart';
+import 'package:movie_app/bloc/video/index.dart';
 import 'package:movie_app/model/movie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie_app/widgets/app_image.dart';
-import 'package:movie_app/widgets/artistList.dart';
-import 'package:movie_app/widgets/detail_app_bar.dart';
-import 'package:movie_app/widgets/video.dart';
+import 'package:movie_app/widgets/index.dart';
 
-import '../widgets/app_sized_box.dart';
-import '../widgets/build_text.dart';
-import '../services/api_services.dart';
 
 class DetailScreen extends StatelessWidget {
   final Movie movie;
   DetailScreen(this.movie);
-
-  List<MovieType> movieTypeL = [];
-
-/*  @override
-  void initState() {
-    movieType();
-  }*/
-
-
- /* void movieType() async {
-    final type = await fetchType(movie.id);
-    print('type:--------------->$type');
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +34,7 @@ class DetailScreen extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       AppSizedBox(height: 45.h),
       detailScreenToolBar(context),
-      movieInfo(),
+      MovieInfo(movie: movie),
       AppSizedBox(height: 15.h),
       Expanded(
         child: SingleChildScrollView(
@@ -88,77 +65,7 @@ class DetailScreen extends StatelessWidget {
     );
   }
 
-  Widget movieInfo() {
-    return Container(
-      margin: EdgeInsets.only(top: 13.w),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-                height: .2.sh,
-                width: 110.w,
-                margin: EdgeInsets.only(
-                  left: 20.w,
-                ),
-                child: appImage(movie.poster!)),
-          ),
-          AppSizedBox(width: 10.w),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppText(text: 'Featured Crew', textSize: 12),
-                  AppSizedBox(height: 10.h),
-                  AppText(
-                    text: movie.title ?? '',
-                    fontWeight: FontWeight.bold,
-                    textSize: 15.sp,
-                  ),
-                  AppText(
-                    text: movie.title ?? '',
-                    textSize: 10.sp,
-                  ),
-                  AppSizedBox(height: 10.h),
-                  AppText(
-                    text: movie.title ?? '',
-                    fontWeight: FontWeight.bold,
-                    textSize: 15.sp,
-                  ),
-                  AppText(
-                    text: movie.title ?? '',
-                    textSize: 10.sp,
-                  ),
-                  AppSizedBox(height: 10.h),
-                  /*  FutureBuilder<List<MovieType>>(
-                      future: fetchType(movie.id),
-                      builder: (context,snapshot){
-                        if(snapshot.hasData) return AppText(
-                          text:movieTypeL[0].type
-                              +' | '+ movie.date,
-                          textSize: 12.sp,
-                        );
-                        return AppText(
-                          text:movie.date,
-                          textSize: 12.sp,
-                        );
-                      }),*/
-                  AppText(
-                    text: movie.date ?? '',
-                    textSize: 12.sp,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+
 
   Widget moviePoster() {
     return BackdropFilter(

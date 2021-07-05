@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie_app/bloc/search/search_bloc.dart';
-import 'package:movie_app/bloc/search/search_event.dart';
-import 'package:movie_app/widgets/app_sized_box.dart';
-import 'package:movie_app/widgets/app_text_field.dart';
-import 'app_icon_button.dart';
+import 'package:movie_app/bloc/search/index.dart';
+
+import 'index.dart';
+
+
+
 
 class AppSearchBar extends StatelessWidget {
   AppSearchBar();

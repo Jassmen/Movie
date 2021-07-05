@@ -3,36 +3,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie_app/bloc/movies/movies_bloc.dart';
-import 'package:movie_app/bloc/movies/movies_event.dart';
-import 'package:movie_app/bloc/movies/movies_state.dart';
+import 'package:movie_app/bloc/movies/index.dart';
 import 'package:movie_app/screens/detail_screen.dart';
 import 'package:movie_app/model/movie.dart';
 
-import 'package:movie_app/widgets/app_image.dart';
-import 'package:movie_app/widgets/home_screen_app_bar.dart';
-import 'package:movie_app/widgets/navigate_to.dart';
-
 import '../widgets/index.dart';
-import '../widgets/build_text.dart';
-import '../model/movie.dart';
-import '../widgets/movie_card.dart';
 
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
-
 String selectedItem = 'now_playing';
 
 class _HomeState extends State<Home> {
   final PageController pageController = PageController(viewportFraction: .8, initialPage: 0);
 
   List<Movie> movies = [];
-
   int backgroundIndex = 0;
-
   void fun() => {};
+
   @override
   void initState() {
     pageController.addListener(fun);
@@ -42,7 +31,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    print('selectedItem----------$selectedItem');
     return BlocProvider(
       create: (_) => MoviesBloc()..add(MoviesEventFetch(selectedItem: selectedItem)),
       child: _buildBody(),
@@ -90,7 +78,7 @@ class _HomeState extends State<Home> {
   Widget buildPager(int page) {
     return InkWell(
       onTap: () {
-        print('Movie:${movies[backgroundIndex]}');
+        //print('Movie:${movies[backgroundIndex]}');
        navigateTo(context,DetailScreen(movies[backgroundIndex]));
       },
       child: Container(
@@ -146,7 +134,6 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
 Center buildProgressWidget() {
   return Center(
     child: CircularProgressIndicator(),

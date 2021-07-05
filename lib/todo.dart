@@ -6,36 +6,28 @@
 /// 6 - Remove all Commented Code
 /// 7 - Remove unused prints
 /// late Future<void> initializeVideoPlayerFuture;
-/*       child: FutureBuilder(
-         future: initializeVideoPlayerFuture,
-         builder: (context,snapshot){
-           if( snapshot.connectionState == ConnectionState.done){
-             return Stack(
-               children: [
-                 AspectRatio(
-                     aspectRatio: controller.value.aspectRatio,
-                   child: VideoPlayer(controller),
-                 ),
-                 Center(
-                   child: IconButton(
-                     onPressed: (){
-                       setState(() {
-                         controller.value.isPlaying?
-                             controller.pause(): controller.play();
-                       });
-                     },
-                     icon: Icon(Icons.play_circle_outline_outlined),
-                   ),
-                 )
-               ],
-             );
-           }else{
-             return Center(
-               child: CircularProgressIndicator(),
-             );
-           }
-         },
-       )
-    );*/
+
+
+
+/*AppText(
+                    text: movie.title ?? '',
+                    fontWeight: FontWeight.bold,
+                    textSize: 15.sp,
+                  ),
+                  AppText(
+                    text: movie.title ?? '',
+                    textSize: 10.sp,
+                  ),
+                  AppSizedBox(height: 10.h),
+                  AppText(
+                    text: movie.title ?? '',
+                    fontWeight: FontWeight.bold,
+                    textSize: 15.sp,
+                  ),
+                  AppText(
+                    text: movie.title ?? '',
+                    textSize: 10.sp,
+                  ),
+                  AppSizedBox(height: 10.h),*/
 
 

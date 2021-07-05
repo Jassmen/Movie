@@ -6,3 +6,7 @@ export 'detail_app_bar.dart';
 export 'movie_card.dart';
 export 'video.dart';
 export 'home_screen_app_bar.dart';
+export 'app_text_field.dart';
+export 'build_text.dart';
+export 'navigate_to.dart';
+export 'movie_info.dart';

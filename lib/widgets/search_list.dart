@@ -3,11 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:movie_app/model/movie.dart';
 import 'package:movie_app/screens/detail_screen.dart';
-import 'package:movie_app/widgets/navigate_to.dart';
+import 'index.dart';
 
-import 'app_image.dart';
-import 'app_sized_box.dart';
-import 'build_text.dart';
 
 Widget searchedList(List<Movie> list) {
   return ListView.builder(
